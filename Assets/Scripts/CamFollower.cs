@@ -11,7 +11,7 @@ public class CamFollower : MonoBehaviour
     const float CATCHUP_LAG     =   FOLLOW_LAG * FOLLOW_LAG;
 
 
-    [HideInInspector]public bool xLockToTarget = false;
+    [HideInInspector]public bool xLockToTarget = true;
     float followFactor = FOLLOW_LAG;
 
 
