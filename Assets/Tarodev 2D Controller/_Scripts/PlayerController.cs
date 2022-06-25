@@ -81,7 +81,7 @@ namespace TarodevController {
             // Ground
             LandingThisFrame = false;
             var groundedCheck = RunDetection(_raysDown);
-            Debug.Log("Grounded: " + groundedCheck);
+            //Debug.Log("Grounded: " + groundedCheck);
             if (_colDown && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
             else if (!_colDown && groundedCheck) {
                 _coyoteUsable = true; // Only trigger when first touching
