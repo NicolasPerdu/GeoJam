@@ -81,7 +81,6 @@ namespace TarodevController {
             // Ground
             LandingThisFrame = false;
             var groundedCheck = RunDetection(_raysDown);
-            Debug.Log("Grounded: " + groundedCheck);
             if (_colDown && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
             else if (!_colDown && groundedCheck) {
                 _coyoteUsable = true; // Only trigger when first touching
@@ -279,9 +278,9 @@ namespace TarodevController {
             for (int i = 1; i < _freeColliderIterations; i++) {
                 // increment to check all but furthestPoint - we did that already
                 var t = (float)i / _freeColliderIterations;
-                var posToTry = Vector2.Lerp(pos, furthestPoint, t);
+                var posToTry2D = Vector2.Lerp(pos, furthestPoint, t);
 
-                if (Physics2D.OverlapBox(posToTry, _characterBounds.size, 0, _groundLayer)) {
+                if (Physics2D.OverlapBox(posToTry2D, _characterBounds.size, 0, _groundLayer)) {
                     transform.position = positionToMoveTo;
 
                     // We've landed on a corner or hit our head on a ledge. Nudge the player gently
@@ -294,10 +293,20 @@ namespace TarodevController {
                     return;
                 }
 
-                positionToMoveTo = posToTry;
+                positionToMoveTo = new Vector3(posToTry2D.x, posToTry2D.y, transform.position.z);
             }
         }
 
         #endregion
+
+        private void OnTriggerEnter(Collider other) {
+            Debug.Log("Trigger enter!");
+            Teleporter tp = other.gameObject.GetComponent<Teleporter>();
+            if (tp) {
+                Debug.Log("Hit Teleport: " + other.gameObject.name);
+                transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
+                _groundLayer = tp.DestinationLane.GroundLayer;
+            }
+        }
     }
 }
