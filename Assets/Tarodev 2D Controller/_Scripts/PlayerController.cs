@@ -11,6 +11,9 @@ namespace TarodevController {
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
     public class PlayerController : MonoBehaviour, IPlayerController {
+
+        public bool isActivePlayer => MasterControl.main.activeCharacter.transform == transform;
+
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
@@ -48,13 +51,20 @@ namespace TarodevController {
         #region Gather Input
 
         private void GatherInput() {
-            Input = new FrameInput {
-                JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
-                JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
-                X = UnityEngine.Input.GetAxisRaw("Horizontal")
-            };
-            if (Input.JumpDown) {
-                _lastJumpPressed = Time.time;
+            if (isActivePlayer)
+            {
+                Input = new FrameInput {
+                    JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
+                    JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
+                    X = UnityEngine.Input.GetAxisRaw("Horizontal")
+                };
+                if (Input.JumpDown) {
+                    _lastJumpPressed = Time.time;
+                }
+            }
+            else
+            {
+                Input = new FrameInput {};
             }
         }
 

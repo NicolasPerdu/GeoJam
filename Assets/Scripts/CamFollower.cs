@@ -7,7 +7,7 @@ public class CamFollower : MonoBehaviour
     static public CamFollower main;
     const float MAX_FOLLOW_DIST =   4.0F;
     const float MIN_FOLLOW_DIST =   0.1F;
-    const float FOLLOW_LAG      =   0.992F;
+    const float FOLLOW_LAG      =   0.98F;
     const float CATCHUP_LAG     =   FOLLOW_LAG * FOLLOW_LAG;
 
 

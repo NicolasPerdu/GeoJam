@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerAvatar : MonoBehaviour
 {
+    [Range(1, 3)]public int playerCharacterNumber = 1;
     void Start()
     {
-        MasterControl.main.characterList.Add(this);
-
-        MasterControl.main.SwitchPlayer(this);  // temporary
-
+        if (MasterControl.main.characterList[playerCharacterNumber - 1] == null)
+        {
+            MasterControl.main.characterList[playerCharacterNumber - 1] = this;
+            MasterControl.main.SwitchPlayer(this);  // temporary
+        }
     }
 }
