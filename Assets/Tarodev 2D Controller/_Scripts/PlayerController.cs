@@ -18,6 +18,11 @@ namespace TarodevController {
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
+        public NPC targetNPC;
+        public DialogNPC targetDialog;
+        public SpriteRenderer renderer2;
+        private float interactionRadius = 2f;
+        private Vector2 move;
 
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
@@ -51,7 +56,8 @@ namespace TarodevController {
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
-                X = UnityEngine.Input.GetAxisRaw("Horizontal")
+                X = UnityEngine.Input.GetAxisRaw("Horizontal"),
+                Dialog = UnityEngine.Input.GetButtonDown("Fire1")
             };
             if (Input.JumpDown) {
                 _lastJumpPressed = Time.time;
@@ -153,7 +159,82 @@ namespace TarodevController {
         [SerializeField] private float _deAcceleration = 60f;
         [SerializeField] private float _apexBonus = 2;
 
+
+        public void CheckForNearbyNPCInky() {
+            if (targetNPC != null) {
+                targetDialog.StartStory(renderer2, transform, targetNPC);
+                //anim.SetBool("isWalking", false);
+                //dialogEnabled = test.dialogEnabled;
+            }
+        }
+
+        private void findTargetNPC() {
+            Debug.Log("findTargetNPC");
+            var allParticipants = new List<NPC>(FindObjectsOfType<NPC>());
+
+            float distance = 0;
+
+            List<NPC> targets = allParticipants.FindAll(delegate (NPC p) {
+                //distance = (p.transform.position - this.transform.position).magnitude;
+                //return distance <= interactionRadius;
+                return true;
+            });
+
+            NPC minNPC = null;
+            float dist = 0;
+
+            if (targets.Count > 0) {
+                minNPC = targets[0];
+                dist = (minNPC.transform.position - this.transform.position).magnitude;
+                Debug.Log("dist : " + dist);
+            }
+
+            foreach (NPC npc in targets) {
+                float dist2 = (npc.transform.position - this.transform.position).magnitude;
+                if (dist2 < dist) {
+                    minNPC = npc;
+                    dist = dist2;
+                }
+            }
+
+            if (minNPC != null) {
+                Debug.Log("set target !");
+                targetNPC = minNPC;
+                targetDialog = minNPC.GetComponent<DialogNPC>();
+            } else {
+                targetNPC = null;
+                targetDialog = null;
+            }
+        }
+
+        public void continuStory() {
+
+            // if the story is finished 
+            if (!targetDialog.choicesGenerated) { //&& !targetDialog.story.canContinue
+                targetDialog.RefreshView();
+            }
+        }
+
         private void CalculateWalk() {
+            if(Input.Dialog) {
+                Debug.Log("Dialog !");
+                if (targetDialog != null && targetDialog.choicesGenerated) {
+                    targetDialog.pushButton();
+                } else {
+                    findTargetNPC();
+                    move = Vector2.zero;
+
+                    if (targetDialog != null) {
+                        if (targetDialog.dialogEnabled) {
+                            continuStory();
+                        } else {
+                            CheckForNearbyNPCInky();
+                        }
+                    }
+                }
+            }
+            
+
             if (Input.X != 0) {
                 // Set horizontal move speed
                 _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;

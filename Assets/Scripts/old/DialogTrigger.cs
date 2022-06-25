@@ -1,0 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DialogTrigger : MonoBehaviour {
+    public Message[] messages;
+    public Actor[] actors;
+
+    public void StartDialogue() {
+        FindObjectOfType<DialogManager>().OpenDialogue(messages, actors);
+    }
+
+    void OnTriggerEnter(Collider collider) {
+        Debug.Log("Here");
+        StartDialogue();
+    }
+}
+
+[System.Serializable]
+public class Message {
+    public int actorID;
+    public string message;
+
+}
+
+
+[System.Serializable]
+public class Actor {
+    public string name;
+    public Sprite actorImage;
+
+}
