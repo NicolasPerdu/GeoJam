@@ -8,20 +8,21 @@ namespace TarodevController {
         public float X,Y;
         public bool JumpDown;
         public bool JumpUp;
+        public bool Dialog;
     }
 
     public interface IPlayerController {
-        public Vector3 Velocity { get; }
-        public FrameInput Input { get; }
-        public bool JumpingThisFrame { get; }
-        public bool LandingThisFrame { get; }
-        public Vector3 RawMovement { get; }
-        public bool Grounded { get; }
+        Vector3 Velocity { get; }
+        FrameInput Input { get; }
+        bool JumpingThisFrame { get; }
+        bool LandingThisFrame { get; }
+        Vector3 RawMovement { get; }
+        bool Grounded { get; }
     }
     
     public interface IExtendedPlayerController : IPlayerController {
-        public bool DoubleJumpingThisFrame { get; set; }
-        public bool Dashing { get; set; }  
+        bool DoubleJumpingThisFrame { get; set; }
+        bool Dashing { get; set; }  
     }
 
     public struct RayRange {
