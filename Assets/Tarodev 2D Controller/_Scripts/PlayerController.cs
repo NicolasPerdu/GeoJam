@@ -425,6 +425,17 @@ namespace TarodevController {
                 Debug.Log("Hit CP!");
                 cp.Activate();
             }
+            if (other.CompareTag("Death"))
+            {
+                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
+                {
+                    if (checkpoint.Active)
+                    {
+                        checkpoint.Respawn();
+                    }
+                    break;
+                }
+            }
         }
 
         void OnColliderEnter2D(Collision2D c) {

@@ -12,7 +12,7 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private KeyCode respawnButton;
     [SerializeField] private LayerMask layer;
-
+    [SerializeField] public PlayerController San;
     [SerializeField] public bool Active;
 
     private bool aboutToRespawn;
@@ -52,7 +52,7 @@ public class Checkpoint : MonoBehaviour
         }
     }
 
-    private void Respawn()
+    public void Respawn()
     {
         int spawnIndex = 0;
 
@@ -60,6 +60,20 @@ public class Checkpoint : MonoBehaviour
             currPlayer._groundLayer = layer;
             currPlayer.transform.position = spawnPoints[spawnIndex].position;
             spawnIndex++;
+        }
+    }
+
+    public void RespawnSan()
+    {
+        San._groundLayer = layer;
+        San.transform.position = spawnPoints[0].position;
+        San.gameObject.SetActive(true);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") ){
+            Activate();
         }
     }
 }
