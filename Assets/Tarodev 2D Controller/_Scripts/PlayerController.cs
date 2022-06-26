@@ -15,7 +15,7 @@ namespace TarodevController {
         
         [HideInInspector]public int facingDirection = 1;
 
-        public bool isActivePlayer => MasterControl.main.activeCharacter.transform == transform;
+        public bool isActivePlayer => MasterControl.main.activeCharacter != null && MasterControl.main.activeCharacter.transform == transform;
 
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
