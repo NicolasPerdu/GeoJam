@@ -42,6 +42,10 @@ public class Ichi : MonoBehaviour
         knockback *= .98F;
         if (knockback.magnitude < .5)
             knockback = Vector3.zero;
+
+        if (knockback.x < 0 && controllerReference.ColLeft) knockback.x = 0;
+        if (knockback.x > 0 && controllerReference.ColRight) knockback.x = 0;
+
         transform.parent.position += knockback * Time.deltaTime;
 
     }
@@ -62,7 +66,6 @@ public class Ichi : MonoBehaviour
         lastShot = Time.timeSinceLevelLoad;
         
         controllerReference.PauseMovement(triggerStunTime);
-        knockback = controllerReference.fakingDirection * Vector3.left * 90 + Vector3.up * 15;
-        Debug.Log(knockback);
+        knockback = Mathf.Sign(playerAnimator.transform.localScale.x) * Vector3.left * 90 + Vector3.up * 15;
     }
 }

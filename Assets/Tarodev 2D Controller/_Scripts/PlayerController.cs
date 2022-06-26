@@ -13,7 +13,7 @@ namespace TarodevController {
     /// </summary>
     public class PlayerController : MonoBehaviour, IPlayerController {
         
-        public int fakingDirection = 1;
+        [HideInInspector]public int facingDirection = 1;
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
@@ -24,6 +24,8 @@ namespace TarodevController {
 
 
         private bool freezingMovement = false;
+        private bool freezingGravity = false;
+        private bool freezingJump = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
         
@@ -55,8 +57,8 @@ namespace TarodevController {
 
         private void GatherInput() {
             Input = new FrameInput {
-                JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
-                JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
+                JumpDown = freezingJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
+                JumpUp = freezingJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
                 X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal")
             };
 
@@ -70,6 +72,8 @@ namespace TarodevController {
         #region Collisions
 
         public void PauseMovement(float seconds) => StartCoroutine(FreezeMovementOnTimer(seconds));
+        public void PauseGravity(float seconds) => StartCoroutine(FreezeGravityOnTimer(seconds));
+        public void PauseJumping(float seconds) => StartCoroutine(FreezeJumpingOnTimer(seconds));
 
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
         [SerializeField] private LayerMask _groundLayer;
@@ -79,6 +83,11 @@ namespace TarodevController {
 
         private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
         private bool _colUp, _colRight, _colDown, _colLeft;
+
+        public bool ColUp => _colUp;
+        public bool ColDown => _colDown;
+        public bool ColLeft => _colLeft;
+        public bool ColRight => _colRight;
 
         private float _timeLeftGrounded;
 
@@ -171,7 +180,7 @@ namespace TarodevController {
                 var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
                 _currentHorizontalSpeed += apexBonus * Time.deltaTime;
 
-                fakingDirection = Input.X > 0 ? 1 : -1;
+                facingDirection = Input.X > 0 ? 1 : -1;
             }
             else {
                 // No input. Let's slow the character down
@@ -194,7 +203,11 @@ namespace TarodevController {
         private float _fallSpeed;
 
         private void CalculateGravity() {
-            if (_colDown) {
+            if (freezingGravity)
+            {
+
+            }
+            else if (_colDown) {
                 // Move out of the ground
                 if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
             }
@@ -318,10 +331,44 @@ namespace TarodevController {
             }
         }
 
+        void OnColliderEnter2D(Collision2D c) {
+            if (c.gameObject.tag == "Bouncer")
+            {
+                Vector2 nAverage = Vector3.zero;
+                int i = 0;
+                foreach (ContactPoint2D contact in c.contacts)
+                {
+                    nAverage += contact.normal;
+                    i++;
+                }
+
+                nAverage /= i;
+
+                _currentHorizontalSpeed = nAverage.x * 40;
+            }
+        }
+
         IEnumerator FreezeMovementOnTimer(float seconds)
         {
             freezingMovement = true;
             yield return new WaitForSeconds(seconds);
+            freezingMovement = false;
+        }
+
+        IEnumerator FreezeJumpingOnTimer(float seconds)
+        {
+            freezingJump = true;
+            yield return new WaitForSeconds(seconds);
+            freezingJump = false;
+        }
+
+        IEnumerator FreezeGravityOnTimer(float seconds)
+        {
+            _currentVerticalSpeed = 0;
+            freezingGravity = true;
+            freezingMovement = true;
+            yield return new WaitForSeconds(seconds);
+            freezingGravity = false;
             freezingMovement = false;
         }
     }
