@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace TarodevController {
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
     public class PlayerController : MonoBehaviour, IPlayerController {
+        
+        public int fakingDirection = 1;
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
@@ -19,8 +22,11 @@ namespace TarodevController {
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
 
+
+        private bool freezingMovement = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
+        
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
@@ -51,8 +57,9 @@ namespace TarodevController {
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
-                X = UnityEngine.Input.GetAxisRaw("Horizontal")
+                X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal")
             };
+
             if (Input.JumpDown) {
                 _lastJumpPressed = Time.time;
             }
@@ -61,6 +68,8 @@ namespace TarodevController {
         #endregion
 
         #region Collisions
+
+        public void PauseMovement(float seconds) => StartCoroutine(FreezeMovementOnTimer(seconds));
 
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
         [SerializeField] private LayerMask _groundLayer;
@@ -96,7 +105,6 @@ namespace TarodevController {
 
             bool RunDetection(RayRange range) {
                 return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
-                
             }
         }
 
@@ -109,7 +117,6 @@ namespace TarodevController {
             _raysLeft = new RayRange(b.min.x, b.min.y + _rayBuffer, b.min.x, b.max.y - _rayBuffer, Vector2.left);
             _raysRight = new RayRange(b.max.x, b.min.y + _rayBuffer, b.max.x, b.max.y - _rayBuffer, Vector2.right);
         }
-
 
         private IEnumerable<Vector2> EvaluateRayPositions(RayRange range) {
             for (var i = 0; i < _detectorCount; i++) {
@@ -163,6 +170,8 @@ namespace TarodevController {
                 // Apply bonus at the apex of a jump
                 var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
                 _currentHorizontalSpeed += apexBonus * Time.deltaTime;
+
+                fakingDirection = Input.X > 0 ? 1 : -1;
             }
             else {
                 // No input. Let's slow the character down
@@ -307,6 +316,13 @@ namespace TarodevController {
                 transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
                 _groundLayer = tp.DestinationLane.GroundLayer;
             }
+        }
+
+        IEnumerator FreezeMovementOnTimer(float seconds)
+        {
+            freezingMovement = true;
+            yield return new WaitForSeconds(seconds);
+            freezingMovement = false;
         }
     }
 }
