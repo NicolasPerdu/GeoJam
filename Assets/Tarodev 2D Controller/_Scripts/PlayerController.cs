@@ -91,7 +91,7 @@ namespace TarodevController {
         public void PauseJumping(float seconds) => StartCoroutine(FreezeJumpingOnTimer(seconds));
 
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
-        [SerializeField] private LayerMask _groundLayer;
+        [SerializeField] public LayerMask _groundLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -418,6 +418,12 @@ namespace TarodevController {
                 Debug.Log("Hit Teleport: " + other.gameObject.name);
                 transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
                 _groundLayer = tp.DestinationLane.GroundLayer;
+            }
+
+            Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
+            if (cp) {
+                Debug.Log("Hit CP!");
+                cp.Activate();
             }
         }
 
