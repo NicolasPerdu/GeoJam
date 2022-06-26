@@ -3,17 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bouncer
+  - Breakable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Ground Back
+  - Ground Middle
+  - Ground Front
   - 
   - 
   - 

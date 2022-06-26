@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace TarodevController {
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
     public class PlayerController : MonoBehaviour, IPlayerController {
+        
+        [HideInInspector]public int facingDirection = 1;
 
         public bool isActivePlayer => MasterControl.main.activeCharacter.transform == transform;
 
@@ -27,8 +30,13 @@ namespace TarodevController {
         private float interactionRadius = 2f;
         private Vector2 move;
 
+
+        private bool freezingMovement = false;
+        private bool freezingGravity = false;
+        private bool freezingJump = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
+        
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
@@ -58,11 +66,11 @@ namespace TarodevController {
         private void GatherInput() {
             if (isActivePlayer)
             {
-                Input = new FrameInput {
-                    JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
-                    JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
-                    X = UnityEngine.Input.GetAxisRaw("Horizontal"),
-                    Dialog = UnityEngine.Input.GetButtonDown("Fire1")
+                	Input = new FrameInput {
+                		JumpDown = freezingJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
+                		JumpUp = freezingJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
+                		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
+                    	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
                 };
                 if (Input.JumpDown) {
                     _lastJumpPressed = Time.time;
@@ -78,6 +86,10 @@ namespace TarodevController {
 
         #region Collisions
 
+        public void PauseMovement(float seconds) => StartCoroutine(FreezeMovementOnTimer(seconds));
+        public void PauseGravity(float seconds) => StartCoroutine(FreezeGravityOnTimer(seconds));
+        public void PauseJumping(float seconds) => StartCoroutine(FreezeJumpingOnTimer(seconds));
+
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private int _detectorCount = 3;
@@ -86,6 +98,11 @@ namespace TarodevController {
 
         private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
         private bool _colUp, _colRight, _colDown, _colLeft;
+
+        public bool ColUp => _colUp;
+        public bool ColDown => _colDown;
+        public bool ColLeft => _colLeft;
+        public bool ColRight => _colRight;
 
         private float _timeLeftGrounded;
 
@@ -97,7 +114,6 @@ namespace TarodevController {
             // Ground
             LandingThisFrame = false;
             var groundedCheck = RunDetection(_raysDown);
-            //Debug.Log("Grounded: " + groundedCheck);
             if (_colDown && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
             else if (!_colDown && groundedCheck) {
                 _coyoteUsable = true; // Only trigger when first touching
@@ -113,7 +129,6 @@ namespace TarodevController {
 
             bool RunDetection(RayRange range) {
                 return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
-                
             }
         }
 
@@ -126,7 +141,6 @@ namespace TarodevController {
             _raysLeft = new RayRange(b.min.x, b.min.y + _rayBuffer, b.min.x, b.max.y - _rayBuffer, Vector2.left);
             _raysRight = new RayRange(b.max.x, b.min.y + _rayBuffer, b.max.x, b.max.y - _rayBuffer, Vector2.right);
         }
-
 
         private IEnumerable<Vector2> EvaluateRayPositions(RayRange range) {
             for (var i = 0; i < _detectorCount; i++) {
@@ -255,6 +269,8 @@ namespace TarodevController {
                 // Apply bonus at the apex of a jump
                 var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
                 _currentHorizontalSpeed += apexBonus * Time.deltaTime;
+
+                facingDirection = Input.X > 0 ? 1 : -1;
             }
             else {
                 // No input. Let's slow the character down
@@ -277,7 +293,11 @@ namespace TarodevController {
         private float _fallSpeed;
 
         private void CalculateGravity() {
-            if (_colDown) {
+            if (freezingGravity)
+            {
+
+            }
+            else if (_colDown) {
                 // Move out of the ground
                 if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
             }
@@ -370,9 +390,9 @@ namespace TarodevController {
             for (int i = 1; i < _freeColliderIterations; i++) {
                 // increment to check all but furthestPoint - we did that already
                 var t = (float)i / _freeColliderIterations;
-                var posToTry = Vector2.Lerp(pos, furthestPoint, t);
+                var posToTry2D = Vector2.Lerp(pos, furthestPoint, t);
 
-                if (Physics2D.OverlapBox(posToTry, _characterBounds.size, 0, _groundLayer)) {
+                if (Physics2D.OverlapBox(posToTry2D, _characterBounds.size, 0, _groundLayer)) {
                     transform.position = positionToMoveTo;
 
                     // We've landed on a corner or hit our head on a ledge. Nudge the player gently
@@ -385,10 +405,61 @@ namespace TarodevController {
                     return;
                 }
 
-                positionToMoveTo = posToTry;
+                positionToMoveTo = new Vector3(posToTry2D.x, posToTry2D.y, transform.position.z);
             }
         }
 
         #endregion
+
+        private void OnTriggerEnter(Collider other) {
+            Debug.Log("Trigger enter!");
+            Teleporter tp = other.gameObject.GetComponent<Teleporter>();
+            if (tp) {
+                Debug.Log("Hit Teleport: " + other.gameObject.name);
+                transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
+                _groundLayer = tp.DestinationLane.GroundLayer;
+            }
+        }
+
+        void OnColliderEnter2D(Collision2D c) {
+            if (c.gameObject.tag == "Bouncer")
+            {
+                Vector2 nAverage = Vector3.zero;
+                int i = 0;
+                foreach (ContactPoint2D contact in c.contacts)
+                {
+                    nAverage += contact.normal;
+                    i++;
+                }
+
+                nAverage /= i;
+
+                _currentHorizontalSpeed = nAverage.x * 40;
+            }
+        }
+
+        IEnumerator FreezeMovementOnTimer(float seconds)
+        {
+            freezingMovement = true;
+            yield return new WaitForSeconds(seconds);
+            freezingMovement = false;
+        }
+
+        IEnumerator FreezeJumpingOnTimer(float seconds)
+        {
+            freezingJump = true;
+            yield return new WaitForSeconds(seconds);
+            freezingJump = false;
+        }
+
+        IEnumerator FreezeGravityOnTimer(float seconds)
+        {
+            _currentVerticalSpeed = 0;
+            freezingGravity = true;
+            freezingMovement = true;
+            yield return new WaitForSeconds(seconds);
+            freezingGravity = false;
+            freezingMovement = false;
+        }
     }
 }
