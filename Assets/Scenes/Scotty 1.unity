@@ -123,6 +123,30 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &22036473 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8984242198248116311, guid: e0c0537a9f789ce41a6cf9ef20f33956, type: 3}
+  m_PrefabInstance: {fileID: 8984242199069246540}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &22036474
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22036473}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &77488304
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &77488305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11110,6 +11134,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1309951280 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 681624945405358273, guid: 9067298dd0a7ef5468caee273dfc7a55, type: 3}
+  m_PrefabInstance: {fileID: 5778301737290764251}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1309951281
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309951280}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1336517344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5999434583143701896, guid: 9067298dd0a7ef5468caee273dfc7a55, type: 3}
@@ -11760,6 +11808,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1904254637 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5440494365790189758, guid: 0ef235b968269534f8f3ea7522eedf0e, type: 3}
+  m_PrefabInstance: {fileID: 1352694360396935288}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1904254638
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904254637}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 32960f7704b1d304caa69107aa19c76c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1927976042 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5999434583175241212, guid: 9067298dd0a7ef5468caee273dfc7a55, type: 3}
