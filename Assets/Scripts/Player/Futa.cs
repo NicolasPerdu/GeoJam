@@ -34,7 +34,7 @@ public class Futa : MonoBehaviour {
         if (propelDash.magnitude < .5F)
             propelDash = Vector3.zero;
         if ((!controllerReference.ColDown && propelDash.y <= 0) || (!controllerReference.ColUp && propelDash.y >= 0))
-            transform.parent.position += propelDash * Time.deltaTime;
+            transform.root.position += propelDash * Time.deltaTime;
         
         if (controllerReference.Grounded)
             canDash = true;
