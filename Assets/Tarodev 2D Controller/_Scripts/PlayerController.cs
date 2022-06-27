@@ -34,6 +34,7 @@ namespace TarodevController {
         private bool freezingMovement = false;
         private bool freezingGravity = false;
         private bool freezingJump = false;
+        private static bool canJump = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
         
@@ -59,7 +60,10 @@ namespace TarodevController {
 
             MoveCharacter(); // Actually perform the axis movement
         }
-
+        public void ToggleCanJump()
+        {
+            canJump = true;
+        }
 
         #region Gather Input
 
@@ -67,8 +71,8 @@ namespace TarodevController {
             if (isActivePlayer)
             {
                 	Input = new FrameInput {
-                		JumpDown = freezingJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
-                		JumpUp = freezingJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
+                		JumpDown = freezingJump || !canJump? false : UnityEngine.Input.GetButtonDown("Jump"),
+                		JumpUp = freezingJump || !canJump? false : UnityEngine.Input.GetButtonUp("Jump"),
                 		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
                     	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
                 };
@@ -91,7 +95,7 @@ namespace TarodevController {
         public void PauseJumping(float seconds) => StartCoroutine(FreezeJumpingOnTimer(seconds));
 
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
-        [SerializeField] private LayerMask _groundLayer;
+        [SerializeField] public LayerMask _groundLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -419,6 +423,23 @@ namespace TarodevController {
                 transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
                 _groundLayer = tp.DestinationLane.GroundLayer;
             }
+
+            Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
+            if (cp) {
+                Debug.Log("Hit CP!");
+                cp.Activate();
+            }
+            if (other.CompareTag("Death"))
+            {
+                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
+                {
+                    if (checkpoint.Active)
+                    {
+                        checkpoint.Respawn();
+                    }
+                    break;
+                }
+            }
         }
 
         void OnColliderEnter2D(Collision2D c) {
@@ -460,6 +481,16 @@ namespace TarodevController {
             yield return new WaitForSeconds(seconds);
             freezingGravity = false;
             freezingMovement = false;
+        }
+
+        public void DisableSelf()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void EnableSelf()
+        {
+            gameObject.SetActive(true);
         }
     }
 }
