@@ -221,7 +221,8 @@ MonoBehaviour:
   Futa: {fileID: 306877981}
   San: {fileID: 813207947}
   nextDimensionCheckpoint: {fileID: 1799474362}
-  theMaster: {fileID: 0}
+  theMaster: {fileID: 1382829543}
+  destinationDimension: 2
 --- !u!65 &28241235
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1834,6 +1835,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xLockToTarget: 1
   followObject: {fileID: 0}
+--- !u!114 &1382829543 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6064604412491206705, guid: 520c0ab86ad334f4da8e3702c7e0d7a8, type: 3}
+  m_PrefabInstance: {fileID: 1505372852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382829541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca07687d80c29ff48a373ea72c27da37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1403974001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2457,7 +2469,6 @@ GameObject:
   - component: {fileID: 1773131966}
   - component: {fileID: 1773131955}
   - component: {fileID: 1773131965}
-  - component: {fileID: 1773131964}
   - component: {fileID: 1773131963}
   - component: {fileID: 1773131962}
   - component: {fileID: 1773131961}
@@ -2569,7 +2580,8 @@ GameObject:
   - component: {fileID: 1773132069}
   - component: {fileID: 1773132070}
   - component: {fileID: 1773132071}
-  - component: {fileID: 1773132061}
+  - component: {fileID: 1773132072}
+  - component: {fileID: 1773132062}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -2602,9 +2614,8 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1773131972}
-  selectedCommands:
-  - {fileID: 1773132063}
+  - {fileID: 1773131965}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -2858,21 +2869,6 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
---- !u!114 &1773131964
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773131954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2f6487d21a03404cb21b245f0242e79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentBlock: {fileID: 1773131965}
-  suppressBlockAutoSelect: 0
-  waitForFrames: 1
 --- !u!114 &1773131965
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -2896,8 +2892,10 @@ MonoBehaviour:
   itemId: 0
   blockName: Intro
   description: 
-  eventHandler: {fileID: 1773131964}
+  eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1773132072}
+  - {fileID: 1773132062}
   - {fileID: 1773131962}
   - {fileID: 1773131967}
   - {fileID: 1773131963}
@@ -3164,7 +3162,6 @@ MonoBehaviour:
   - {fileID: 1773132069}
   - {fileID: 1773132071}
   - {fileID: 1773132070}
-  - {fileID: 1773132061}
   suppressAllAutoSelections: 0
 --- !u!114 &1773131973
 MonoBehaviour:
@@ -5708,9 +5705,9 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
---- !u!114 &1773132061
+--- !u!114 &1773132062
 MonoBehaviour:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5720,10 +5717,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 140
+  itemId: 142
   indentLevel: 0
   description: 
-  targetObject: {fileID: 306877981}
+  targetObject: {fileID: 813207947}
   targetComponentAssemblyName: TarodevController.PlayerController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -5980,6 +5977,34 @@ MonoBehaviour:
   targetComponentText: PlayerController
   targetMethod: ToggleCanJump
   targetMethodText: 'ToggleCanJump (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1773132072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773131954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 141
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 306877981}
+  targetComponentAssemblyName: TarodevController.PlayerController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: PlayerController
+  targetMethod: DisableSelf
+  targetMethodText: 'DisableSelf (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 

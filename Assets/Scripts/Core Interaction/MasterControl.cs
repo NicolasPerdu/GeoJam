@@ -20,7 +20,7 @@ public class MasterControl : MonoBehaviour
 
     void Start()
     {
-        narrative.ExecuteBlock("Intro");
+        //narrative.ExecuteBlock("Intro");
     }
     void Update()
     {

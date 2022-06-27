@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TarodevController;
 
 public class DimensionAscension : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class DimensionAscension : MonoBehaviour
     [SerializeField] public GameObject San;
     [SerializeField] public Checkpoint nextDimensionCheckpoint;
     [SerializeField] public MasterControl theMaster;
+    [SerializeField] public int destinationDimension;
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +28,26 @@ public class DimensionAscension : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            ichi.SetActive(true);
-            Futa.SetActive(true);
-            San.SetActive(true);
-            nextDimensionCheckpoint.Respawn();
-            theMaster.SwitchPlayerIchi();
+            if (destinationDimension == 2)
+            {
+                ichi.SetActive(true);
+                Futa.SetActive(true);
+                ichi.GetComponent<PlayerController>().EnableSelf();
+                Futa.GetComponent<PlayerController>().EnableSelf();
+                nextDimensionCheckpoint.Respawn();
+                theMaster.SwitchPlayerIchi();
+            }
+            else
+            {
+                ichi.SetActive(true);
+                Futa.SetActive(true);
+                San.SetActive(true);
+                ichi.GetComponent<PlayerController>().EnableSelf();
+                Futa.GetComponent<PlayerController>().EnableSelf();
+                San.GetComponent<PlayerController>().EnableSelf();
+                nextDimensionCheckpoint.Respawn();
+                theMaster.SwitchPlayerIchi();
+            }
         }
     }
 }
