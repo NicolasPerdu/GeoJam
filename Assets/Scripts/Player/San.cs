@@ -7,7 +7,7 @@ public class San : MonoBehaviour {
 
     private Vector3 propelDash = Vector3.zero;
 
-    [SerializeField] private float asplodeDelay = 3f;
+    [SerializeField] private float asplodeDelay = 0.5f;
     [SerializeField] private float triggerDelay = .05f;
     [SerializeField] private float propelPower = 1f;
     [SerializeField] private GameObject kaboomPrefab;
@@ -65,8 +65,8 @@ public class San : MonoBehaviour {
             {
                 checkpoint.RespawnSan();
                 sanSprite.enabled = true;
+                break;
             }
-            break;
         }
         yield return null;
     }
