@@ -5,6 +5,7 @@ using Fungus;
 
 public class FungusTrigger : MonoBehaviour
 {
+    [SerializeField] public string flowchartBlock;
     [SerializeField] public Flowchart narrative;
     [SerializeField] public float timer;
     private float timerCountdown;
@@ -29,12 +30,12 @@ public class FungusTrigger : MonoBehaviour
         {
             if (!hasBeenTriggeredAlready)
             {
-                narrative.ExecuteBlock("IchiShootGunTutorial");
+                narrative.ExecuteBlock(flowchartBlock);
                 hasBeenTriggeredAlready = true;
             }
             else if (timerCountdown <= 0f)
             {
-                narrative.ExecuteBlock("IchiShootGunTutorial");
+                narrative.ExecuteBlock(flowchartBlock);
             }
             timerCountdown = timer;
 

@@ -34,6 +34,7 @@ namespace TarodevController {
         private bool freezingMovement = false;
         private bool freezingGravity = false;
         private bool freezingJump = false;
+        private static bool canJump = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
         
@@ -59,7 +60,10 @@ namespace TarodevController {
 
             MoveCharacter(); // Actually perform the axis movement
         }
-
+        public void ToggleCanJump()
+        {
+            canJump = true;
+        }
 
         #region Gather Input
 
@@ -67,8 +71,8 @@ namespace TarodevController {
             if (isActivePlayer)
             {
                 	Input = new FrameInput {
-                		JumpDown = freezingJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
-                		JumpUp = freezingJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
+                		JumpDown = freezingJump || !canJump? false : UnityEngine.Input.GetButtonDown("Jump"),
+                		JumpUp = freezingJump || !canJump? false : UnityEngine.Input.GetButtonUp("Jump"),
                 		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
                     	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
                 };
@@ -477,6 +481,16 @@ namespace TarodevController {
             yield return new WaitForSeconds(seconds);
             freezingGravity = false;
             freezingMovement = false;
+        }
+
+        public void DisableSelf()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void EnableSelf()
+        {
+            gameObject.SetActive(true);
         }
     }
 }
