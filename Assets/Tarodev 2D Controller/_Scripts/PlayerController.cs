@@ -15,7 +15,7 @@ namespace TarodevController {
         
         [HideInInspector]public int facingDirection = 1;
 
-        public bool isActivePlayer => MasterControl.main.activeCharacter.transform == transform;
+        public bool isActivePlayer => MasterControl.main.activeCharacter != null && MasterControl.main.activeCharacter.transform == transform;
 
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
@@ -30,23 +30,20 @@ namespace TarodevController {
         private float interactionRadius = 2f;
         private Vector2 move;
 
+
         private bool freezingMovement = false;
         private bool freezingGravity = false;
         private bool freezingJump = false;
+        private static bool canJump = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
-        Animator anim;
-
+        
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
         void Awake() => Invoke(nameof(Activate), 0.5f);
         void Activate() =>  _active = true;
-
-        private void Start() {
-            anim = GetComponent<Animator>();
-        }
-
+        
         private void Update() {
             if(!_active) return;
             // Calculate velocity
@@ -63,7 +60,10 @@ namespace TarodevController {
 
             MoveCharacter(); // Actually perform the axis movement
         }
-
+        public void ToggleCanJump()
+        {
+            canJump = true;
+        }
 
         #region Gather Input
 
@@ -71,15 +71,14 @@ namespace TarodevController {
             if (isActivePlayer)
             {
                 	Input = new FrameInput {
-                		JumpDown = freezingJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
-                		JumpUp = freezingJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
+                		JumpDown = freezingJump || !canJump? false : UnityEngine.Input.GetButtonDown("Jump"),
+                		JumpUp = freezingJump || !canJump? false : UnityEngine.Input.GetButtonUp("Jump"),
                 		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
                     	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
                 };
                 if (Input.JumpDown) {
                     _lastJumpPressed = Time.time;
                 }
-                anim.SetBool("walking", Input.X != 0);
             }
             else
             {
@@ -96,7 +95,7 @@ namespace TarodevController {
         public void PauseJumping(float seconds) => StartCoroutine(FreezeJumpingOnTimer(seconds));
 
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
-        [SerializeField] private LayerMask _groundLayer;
+        [SerializeField] public LayerMask _groundLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -424,6 +423,23 @@ namespace TarodevController {
                 transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
                 _groundLayer = tp.DestinationLane.GroundLayer;
             }
+
+            Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
+            if (cp) {
+                Debug.Log("Hit CP!");
+                cp.Activate();
+            }
+            if (other.CompareTag("Death"))
+            {
+                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
+                {
+                    if (checkpoint.Active)
+                    {
+                        checkpoint.Respawn();
+                    }
+                    break;
+                }
+            }
         }
 
         void OnColliderEnter2D(Collision2D c) {
@@ -465,6 +481,16 @@ namespace TarodevController {
             yield return new WaitForSeconds(seconds);
             freezingGravity = false;
             freezingMovement = false;
+        }
+
+        public void DisableSelf()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void EnableSelf()
+        {
+            gameObject.SetActive(true);
         }
     }
 }
