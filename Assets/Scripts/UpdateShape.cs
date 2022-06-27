@@ -4,8 +4,11 @@ public class UpdateShape : MonoBehaviour
 {
     Mesh mesh;
     Vector3[] vertices;
-    double buffer = 0, timeMax = 0.15;
+    double buffer = 0;
+    public double timeMax = 0.15;
     float rangeMin = -4f, rangeMax = 4f;
+
+    float waitTillNextBlurk = .5F;
 
     void Start()
     {
@@ -13,9 +16,10 @@ public class UpdateShape : MonoBehaviour
         vertices = mesh.vertices;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if(buffer > timeMax) {
+
+        if(buffer > waitTillNextBlurk) {
             for (var i = 0; i < vertices.Length; i++) {
                 Vector3 vec = new Vector3(Random.Range(rangeMin, rangeMax), Random.Range(rangeMin, rangeMax), Random.Range(rangeMin, rangeMax));
                 vertices[i] = vec;
@@ -24,6 +28,7 @@ public class UpdateShape : MonoBehaviour
             mesh.vertices = vertices;
             mesh.RecalculateBounds();
             buffer = 0;
+            waitTillNextBlurk = Random.RandomRange(.15F, (float)timeMax);
         }
         buffer = buffer + Time.deltaTime;
     }
