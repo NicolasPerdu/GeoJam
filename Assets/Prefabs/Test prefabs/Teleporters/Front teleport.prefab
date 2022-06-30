@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1409116088212243780, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ced945b524958d64384a356d8a26f3c6, type: 2}
     - target: {fileID: 2803377562858919746, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}
       propertyPath: m_LocalPosition.z
       value: 20.901
@@ -59,5 +63,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Front teleport
       objectReference: {fileID: 0}
+    - target: {fileID: 8443894623528816396, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ced945b524958d64384a356d8a26f3c6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}

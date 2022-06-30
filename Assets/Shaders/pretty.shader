@@ -1,5 +1,5 @@
 
-Shader "BG/Trippy"
+Shader "ShaderMan/Pretty"
 {
 	Properties{
 
@@ -18,50 +18,11 @@ Shader "BG/Trippy"
 
 
 
-
-		// A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
-	uint hash(uint x) {
-		x += (x << 10u);
-		x ^= (x >> 6u);
-		x += (x << 3u);
-		x ^= (x >> 11u);
-		x += (x << 15u);
-		return x;
-	}
-
-
-
-	// Compound versions of the hashing algorithm I whipped together.
-	uint hash(uint2 v) { return hash(v.x ^ hash(v.y)); }
-	uint hash(uint3 v) { return hash(v.x ^ hash(v.y) ^ hash(v.z)); }
-	uint hash(uint4 v) { return hash(v.x ^ hash(v.y) ^ hash(v.z) ^ hash(v.w)); }
-
-
-	// Construct a float with half-open range [0:1] using low 23 bits.
-	// All zeroes yields 0.0, all ones yields the next smallest representable value below 1.0.
-	float floatConstruct(uint m) {
-		const uint ieeeMantissa = 0x007FFFFFu; // binary32 mantissa bitmask
-		const uint ieeeOne = 0x3F800000u; // 1.0 in IEEE binary32
-
-		m &= ieeeMantissa;                     // Keep only mantissa bits (fractional part)
-		m |= ieeeOne;                          // Add fractional part to 1.0
-
-		float  f = asfloat(m);       // Range [1:2]
-		return f - 1.0;                        // Range [0:1]
-	}
-
-
-
-	// Pseudo-random value in half-open range [0:1].
-	float random(float x) { return floatConstruct(hash(asuint(x))); }
-	float random(float2  v) { return floatConstruct(hash(asuint(v))); }
-	float random(float3  v) { return floatConstruct(hash(asuint(v))); }
-	float random(float4  v) { return floatConstruct(hash(asuint(v))); }
-
 	float4 vec4(float x,float y,float z,float w) { return float4(x,y,z,w); }
 	float4 vec4(float x) { return float4(x,x,x,x); }
 	float4 vec4(float2 x,float2 y) { return float4(float2(x.x,x.y),float2(y.x,y.y)); }
 	float4 vec4(float3 x,float y) { return float4(float3(x.x,x.y,x.z),y); }
+
 
 	float3 vec3(float x,float y,float z) { return float3(x,y,z); }
 	float3 vec3(float x) { return float3(x,x,x); }
@@ -97,12 +58,13 @@ Shader "BG/Trippy"
 	return o;
 	}
 
+
 #define l 120
+
 
 
 	fixed4 frag(VertexOutput vertex_output) : SV_Target
 	{
-
 
 	float2 v = (vertex_output.uv - 1 / 2.) / min(1,1) * 30.;
 	float2 vv = v;// float2 vvv = v;
@@ -168,45 +130,7 @@ Shader "BG/Trippy"
 	float c = ((fmod(R,2.0) > 1.0) ? 1.0 - frac(R) : frac(R));
 	float cc = ((fmod(RR,2.0) > 1.0) ? 1.0 - frac(RR) : frac(RR));
 	float ccc = ((fmod(RRR,2.0) > 1.0) ? 1.0 - frac(RRR) : frac(RRR));
-
-	float2 uv = (vertex_output.uv - 0.5 * 1) / 1;
-
-	uv *= 3.0;
-	float2 gv = frac(uv) - 0.5;
-	float3 col = vec3(gv.xy, 1.);
-
-	//float m = 0.;
-	float t = _Time.y / 2.;
-
-
-	float dist = length(uv * 4.);
-
-	[unroll(100)]
-	for (int x = -2; x <= 2; x++) {
-		[unroll(100)]
-		for (int y = -2; y <= 2; y++) {
-			float2 offset = vec2(x, y);
-			float d = length(gv - offset * 0.7)*1.75;
-			float tNorm = sin(dist - t) * .5 + 0.5;
-			float r = lerp(0.35, 1.8, tNorm);
-
-			m += smoothstep(r*1.0001, r, d);
-		}
-	}
-
-	float rand = random(vec3(vertex_output.uv, _Time));
-
-	float inp = 1.1;
-
-	if (_Time.x % 997 < 500) {
-		inp = 3.2;
-	}
-
-	col.x = fmod(m / 1., c);
-	col.y = fmod(m / 1.1, cc);
-	col.z = fmod(m / 1.3, ccc);
-
-	return vec4(col,1.0);
+	return vec4(ccc, cc, c, 1.0);
 
 	}
 	ENDCG
