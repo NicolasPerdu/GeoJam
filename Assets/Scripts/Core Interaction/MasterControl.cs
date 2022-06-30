@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fungus;
 
 public class MasterControl : MonoBehaviour
 {
+    public Flowchart narrative;
     static public MasterControl main;
     [HideInInspector]public PlayerAvatar[] characterList;
     [HideInInspector]public PlayerAvatar activeCharacter = null;
@@ -16,6 +18,10 @@ public class MasterControl : MonoBehaviour
         characterList = new PlayerAvatar[3];
     }
 
+    void Start()
+    {
+        //narrative.ExecuteBlock("Intro");
+    }
     void Update()
     {
         if (Input.GetButtonDown("Character 1") && characterList[0] != null)
@@ -45,7 +51,7 @@ public class MasterControl : MonoBehaviour
     }
     public void EnablePlayer(int characterDimension)
     {
-        disableInputEveryFrame = true;
+        disableInputEveryFrame = false;
         SwitchPlayer(characterList[Mathf.Clamp(characterDimension, 1, 3) - 1]);
     }
     public void SwitchPlayerIchi() => SwitchPlayer(characterList[0]);

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bouncer
   - Breakable
+  - Checkpoint
+  - Death
   layers:
   - Default
   - TransparentFX

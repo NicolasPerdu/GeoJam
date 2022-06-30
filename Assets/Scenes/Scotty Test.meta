@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scotty Test.meta
 guid: 7cbb0527c19c3184d851cf8a3e549fc8
+========
+guid: 5523d83c64fc82a4e82864eb69cb81d1
+>>>>>>>> main:Assets/Prefabs/Player Characters/Mechanical ver.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

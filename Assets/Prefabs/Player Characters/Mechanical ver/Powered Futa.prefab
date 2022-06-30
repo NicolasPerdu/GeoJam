@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facingDirection: 1
+  debugBypassNixJump: 0
   targetNPC: {fileID: 0}
   targetDialog: {fileID: 0}
   renderer2: {fileID: 0}

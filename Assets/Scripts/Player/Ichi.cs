@@ -46,7 +46,7 @@ public class Ichi : MonoBehaviour
         if (knockback.x < 0 && controllerReference.ColLeft) knockback.x = 0;
         if (knockback.x > 0 && controllerReference.ColRight) knockback.x = 0;
 
-        transform.parent.position += knockback * Time.deltaTime;
+        transform.root.position += knockback * Time.deltaTime;
 
     }
 

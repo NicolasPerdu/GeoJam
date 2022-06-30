@@ -26,5 +26,13 @@ public class Projectile : MonoBehaviour
     void OnBecameVisible() => offScreenTime = null;
 
     void OnBecameInvisible() => offScreenTime = Time.timeSinceLevelLoad;
-    
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.CompareTag("Breakable"))
+        {
+            other.gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+    }
+
 }
