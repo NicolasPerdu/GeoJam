@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scotty Test/Cannot Run.meta
+guid: f3f574adb70b8e940b619caab80879a9
+========
 guid: ff3882396aeda7b4f935b3461210ba0e
+>>>>>>>> main:Assets/Prefabs/Player Characters/Visual ver.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

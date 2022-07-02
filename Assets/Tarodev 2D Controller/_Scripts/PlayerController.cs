@@ -17,7 +17,10 @@ namespace TarodevController {
 
         public bool isActivePlayer => MasterControl.main.activeCharacter != null && MasterControl.main.activeCharacter.transform == transform;
 
+        public bool debugBypassNixJump = false;
+
         // Public for external hooks
+        
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
         public bool JumpingThisFrame { get; private set; }
@@ -43,6 +46,11 @@ namespace TarodevController {
         private bool _active;
         void Awake() => Invoke(nameof(Activate), 0.5f);
         void Activate() =>  _active = true;
+
+        void Start()
+        {
+            if (debugBypassNixJump) canJump = true;
+        }
         
         private void Update() {
             if(!_active) return;

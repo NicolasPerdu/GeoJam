@@ -8,6 +8,7 @@ namespace TarodevController {
     /// This is a supplementary script to help with effects and animation. Basically a juice factory.
     /// </summary>
     public class PlayerAnimator : MonoBehaviour {
+
         [SerializeField] private Animator _anim;
         [SerializeField] private AudioSource _source;
         [SerializeField] private LayerMask _groundMask;
@@ -30,10 +31,22 @@ namespace TarodevController {
             if (_player == null) return;
 
             // Flip the sprite
-            if (_player.Input.X != 0) transform.localScale = new Vector3(_player.Input.X > 0 ? 1 : -1, 1, 1);
+            {
+                if (_player.Input.X != 0)
+                {
+                    if (transform.root.gameObject.name.Contains("San"))
+                        transform.root.localScale = new Vector3(_player.Input.X > 0 ? 1 : -1, 1, 1);
+                    else
+                        transform.localScale = new Vector3(_player.Input.X > 0 ? 1 : -1, 1, 1);
+                    
+                }
+
+ 
+
+            }
 
             // Lean while running
-            var targetRotVector = new Vector3(0, 0, Mathf.Lerp(-_maxTilt, _maxTilt, Mathf.InverseLerp(-1, 1, _player.Input.X)));
+            Vector3 targetRotVector = new Vector3(0, 0, Mathf.Lerp(-_maxTilt, _maxTilt, Mathf.InverseLerp(-1, 1, _player.Input.X)));
             _anim.transform.rotation = Quaternion.RotateTowards(_anim.transform.rotation, Quaternion.Euler(targetRotVector), _tiltSpeed * Time.deltaTime);
 
             // Speed up idle while running
@@ -79,6 +92,7 @@ namespace TarodevController {
             }
 
             _movement = _player.RawMovement; // Previous frame movement is more valuable
+
         }
 
         private void OnDisable() {
