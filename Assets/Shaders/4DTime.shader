@@ -48,10 +48,10 @@ Shader "UltraEffects/4DTime"
 				// Convert to polar coordinates.
 				float2 shiftUV = i.uv - 0.5 ;
 				float radius = sqrt(dot(shiftUV, shiftUV));
-				float angle = atan2(shiftUV.y, shiftUV.x) + sin(_Time.x) * 100;
+				float angle = atan2(shiftUV.y, shiftUV.x) + _Time.w;
 
 				// Calculate segment angle amount.
-				float segmentAngle = UNITY_TWO_PI / _SegmentCount - sin(_Time.x) * 100;
+				float segmentAngle = UNITY_TWO_PI / _SegmentCount;
 
 				// Calculate which segment this angle is in.
 				angle -= segmentAngle * floor(angle / segmentAngle);
@@ -60,7 +60,7 @@ Shader "UltraEffects/4DTime"
 				angle = min(angle, segmentAngle - angle);
 
 				// Convert back to UV coordinates.
-				float2 uv = float2(cos(angle), sin(angle)) * radius + 0.5f;
+				float2 uv = float2(cos(angle), sin(angle)) * radius + 0.5f + sin(_Time.y);
 
 				// Reflect outside the inner circle boundary.
 				uv = max(min(uv, 2.0 - uv), -uv);
