@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TarodevController;
 using UnityEngine;
 
-public class San : MonoBehaviour {
+public class San : PlayerType {
 
     private Vector3 propelDash = Vector3.zero;
 
@@ -13,13 +13,15 @@ public class San : MonoBehaviour {
     [SerializeField] private GameObject kaboomPrefab;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private float aslposionTime;
-    [SerializeField] private SpriteRenderer sanSprite;
+    private GameObject sanVisibleObjects;
     private float igniteTime;
     private bool asploding = false;
+
     PlayerController controllerReference = null;
 
     private void Awake() {
         controllerReference = GetComponentInParent<PlayerController>();
+        sanVisibleObjects = transform.Find("X-Flipper").gameObject;
     }
 
     private void Update() {
@@ -51,7 +53,8 @@ public class San : MonoBehaviour {
     private void Asplode()
     {
         Instantiate(kaboomPrefab, transform.position, Quaternion.identity);
-        sanSprite.enabled = false;
+        sanVisibleObjects.SetActive(false);
+        controllerReference.enabled = false;
         asploding = false;
         StartCoroutine("Asplosion");
     }
@@ -64,7 +67,8 @@ public class San : MonoBehaviour {
             if (checkpoint.Active)
             {
                 checkpoint.RespawnSan();
-                sanSprite.enabled = true;
+                sanVisibleObjects.SetActive(true);
+                controllerReference.enabled = true;
             }
             break;
         }

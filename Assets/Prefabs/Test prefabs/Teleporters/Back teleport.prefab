@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2794812818990706767, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}
+      propertyPath: m_Size.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1409116088212243780, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -53,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8051421235598055016, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}
       propertyPath: m_Name
-      value: Back teleporter
+      value: Back teleport
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 135789c1af8963d44b2bafed7a9e0032, type: 3}

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TarodevController;
 using UnityEngine;
 
-public class Ichi : MonoBehaviour
+public class Ichi : PlayerType
 {
     [SerializeField] private Transform projectileSpawnpoint;
     [SerializeField] private float shootDelay = 1f;
@@ -60,12 +60,12 @@ public class Ichi : MonoBehaviour
     {
         Projectile projectile = 
         Instantiate(ProjectilePrefab, projectileSpawnpoint.position, projectileSpawnpoint.rotation).GetComponent<Projectile>();
-        projectile.Speed = playerAnimator.transform.localScale.x * firingPower;
+        projectile.Speed = playerAnimator.FacingDirection * firingPower;
 
         shooting = false;
         lastShot = Time.timeSinceLevelLoad;
         
         controllerReference.PauseMovement(triggerStunTime);
-        knockback = Mathf.Sign(playerAnimator.transform.localScale.x) * Vector3.left * 90 + Vector3.up * 15;
+        knockback = Mathf.Sign(playerAnimator.FacingDirection) * Vector3.left * 90 + Vector3.up * 15;
     }
 }

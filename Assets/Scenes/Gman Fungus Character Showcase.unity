@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: Ichi
-  nameColor: {r: 1, g: 1, b: 1, a: 1}
+  nameColor: {r: 0, g: 0.98021173, b: 1, a: 1}
   soundEffect: {fileID: 0}
   portraits: []
   portraitsFace: 0
@@ -1552,7 +1552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: San
-  nameColor: {r: 1, g: 1, b: 1, a: 1}
+  nameColor: {r: 0.7425866, g: 0.3160377, b: 1, a: 1}
   soundEffect: {fileID: 0}
   portraits: []
   portraitsFace: 0
@@ -1602,7 +1602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: Futa
-  nameColor: {r: 1, g: 1, b: 1, a: 1}
+  nameColor: {r: 0, g: 0.39658117, b: 1, a: 1}
   soundEffect: {fileID: 0}
   portraits: []
   portraitsFace: 0
@@ -2307,7 +2307,7 @@ GameObject:
   - component: {fileID: 1674496546}
   - component: {fileID: 1674496547}
   m_Layer: 0
-  m_Name: Npc
+  m_Name: Genten
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2339,7 +2339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fb867d2049d41f597aefdd6b19f598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: NPC
+  nameText: Genten
   nameColor: {r: 1, g: 1, b: 1, a: 1}
   soundEffect: {fileID: 0}
   portraits: []
@@ -2602,11 +2602,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 794.22687, y: 161.97937}
+  scrollPos: {x: 996.178, y: 375.17508}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 583
-  zoom: 1
+  zoom: 0.6399999
   scrollViewRect:
     serializedVersion: 2
     x: -343
@@ -2615,7 +2615,8 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1773131965}
-  selectedCommands: []
+  selectedCommands:
+  - {fileID: 1773131963}
   variables: []
   description: 
   stepPause: 0
@@ -2964,7 +2965,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 618
     y: 48
-    width: 188
+    width: 181.25002
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -2990,7 +2991,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 425
     y: 41
-    width: 183
+    width: 175.00002
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -3016,7 +3017,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 211.06186
     y: 38
-    width: 193
+    width: 185.93752
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -3113,7 +3114,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -246.35059
     y: -20.97937
-    width: 155
+    width: 151.56252
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -3178,8 +3179,8 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: -421.88693
-    y: 118.28873
-    width: 168
+    y: 116.365654
+    width: 164.06252
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -3477,7 +3478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 23
   indentLevel: 0
-  storyText: 1D is at the edge of the one dimension wondering what to do
+  storyText: Ichi is at the edge of the one dimension wondering what to do
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -5561,7 +5562,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -551.4432
     y: -46.175262
-    width: 169
+    width: 164.06252
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5707,7 +5708,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1773132062
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5985,7 +5986,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1773132072
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}

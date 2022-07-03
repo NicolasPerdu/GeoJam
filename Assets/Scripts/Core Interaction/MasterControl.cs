@@ -21,6 +21,8 @@ public class MasterControl : MonoBehaviour
     void Start()
     {
         //narrative.ExecuteBlock("Intro");
+        if (activeCharacter == null && characterList.Length > 0)
+            activeCharacter = characterList[0];
     }
     void Update()
     {
