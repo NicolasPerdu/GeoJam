@@ -39,7 +39,7 @@ public class Ichi : MonoBehaviour
             triggerTime = null;
         }
 
-        knockback *= .98F;
+        knockback *= .90F;
         if (knockback.magnitude < .5)
             knockback = Vector3.zero;
 
@@ -47,7 +47,6 @@ public class Ichi : MonoBehaviour
         if (knockback.x > 0 && controllerReference.ColRight) knockback.x = 0;
 
         transform.root.position += knockback * Time.deltaTime;
-
     }
 
     private void FixedUpdate() {

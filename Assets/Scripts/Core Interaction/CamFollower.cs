@@ -22,7 +22,6 @@ public class CamFollower : MonoBehaviour
         main = this;
     }
 
-
     void Update()
     {
         if (followObject != null)

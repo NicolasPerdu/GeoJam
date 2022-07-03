@@ -140,10 +140,17 @@ float3 hsv2rgb(float3 c)
 	float time = _Time.y;
 	float2 uv = vertex_output.uv / 1;
 	//float sintime = (sin(time)/2.)+0.5;
-	float3 rainbow = hsl2rgb(vec3(uv.x + time/7.0,1,uv.y));
+
+	float hue = uv.x + time / 7.0;
+	/*float check = fmod(hue, 7.0);
+
+	if (check > 1 && check < 2) {
+		hue = hue + 1;
+	}*/
+
 	//rainbow = rgb2hsl(rainbow);
 	//rainbow = hsl2rgb(rainbow);
-	return vec4(rainbow,1.0);
+	return vec4(hsl2rgb(vec3(hue, 0.3, uv.y)),1.0);
 
 	}
 	ENDCG
