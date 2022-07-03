@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TarodevController {
     /// <summary>
@@ -345,7 +346,17 @@ namespace TarodevController {
         #endregion
 
         private void OnTriggerEnter(Collider other) {
-            //Debug.Log("Trigger enter!");
+            if (other.tag == "Death") {
+                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>()) {
+                    if (checkpoint.Active) {
+                        checkpoint.Respawn();
+                    }
+                    break;
+                }
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                return;
+            }
+
             Teleporter tp = other.gameObject.GetComponent<Teleporter>();
             if (tp) {
                 //Debug.Log("Hit Teleport: " + other.gameObject.name);
@@ -357,21 +368,11 @@ namespace TarodevController {
             if (cp) {
                 //Debug.Log("Hit CP!");
                 cp.Activate();
-            }
-            if (other.CompareTag("Death"))
-            {
-                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
-                {
-                    if (checkpoint.Active)
-                    {
-                        checkpoint.Respawn();
-                    }
-                    break;
-                }
-            }
+            } 
         }
 
         void OnColliderEnter2D(Collision2D c) {
+            _currentHorizontalSpeed = 0;
             if (c.gameObject.tag == "Bouncer")
             {
                 Vector2 nAverage = Vector3.zero;

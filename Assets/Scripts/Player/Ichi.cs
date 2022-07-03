@@ -20,6 +20,10 @@ public class Ichi : MonoBehaviour
     
     private float? triggerTime = null;
 
+    [SerializeField]
+    private float smoothTime = 0.2F;
+
+    private Vector3 velocity = Vector3.zero;
     private Vector3 knockback = Vector3.zero;
 
     PlayerController controllerReference = null;
@@ -39,14 +43,13 @@ public class Ichi : MonoBehaviour
             triggerTime = null;
         }
 
-        knockback *= .90F;
-        if (knockback.magnitude < .5)
-            knockback = Vector3.zero;
+        if (knockback != Vector3.zero) {
+            transform.root.position = Vector3.SmoothDamp(transform.root.position, knockback, ref velocity, smoothTime);
 
-        if (knockback.x < 0 && controllerReference.ColLeft) knockback.x = 0;
-        if (knockback.x > 0 && controllerReference.ColRight) knockback.x = 0;
-
-        transform.root.position += knockback * Time.deltaTime;
+            if ((transform.root.position.x - knockback.x) < 0.1f) {
+                knockback = Vector3.zero;
+            }
+        }
     }
 
     private void FixedUpdate() {
@@ -65,6 +68,7 @@ public class Ichi : MonoBehaviour
         lastShot = Time.timeSinceLevelLoad;
         
         controllerReference.PauseMovement(triggerStunTime);
-        knockback = Mathf.Sign(playerAnimator.transform.localScale.x) * Vector3.left * 90 + Vector3.up * 15;
+
+        knockback = new Vector3(-Mathf.Sign(playerAnimator.transform.localScale.x) * 5 + transform.root.position.x, 0, 0);
     }
 }
