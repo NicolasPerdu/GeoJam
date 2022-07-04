@@ -13,7 +13,7 @@ public class TitleController : MonoBehaviour
     void Update()
     {
         if(Input.anyKey) {
-            SceneManager.LoadScene("Final");
+            SceneManager.LoadScene("2DWorld");
         }
     }
 }
