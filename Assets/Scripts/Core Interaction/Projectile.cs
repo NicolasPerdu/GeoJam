@@ -14,8 +14,7 @@ public class Projectile : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        transform.position = new Vector3(this.transform.position.x + Speed, this.transform.position.y, this.transform.position.z);
-
+        transform.position = new Vector3(this.transform.position.x + Speed, this.transform.position.y, 0);
 
         if (Time.timeSinceLevelLoad - spawnTime > 10 || 
         (offScreenTime != null && Time.timeSinceLevelLoad - offScreenTime > 0.5F)) {
@@ -28,9 +27,10 @@ public class Projectile : MonoBehaviour
     void OnBecameInvisible() => offScreenTime = Time.timeSinceLevelLoad;
     void OnCollisionEnter(Collision other)
     {
-        if (other.collider.CompareTag("Breakable"))
+        if (other.gameObject.tag == "Breakable")
         {
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
             Destroy(gameObject);
         }
     }
