@@ -1574,11 +1574,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.98, y: 0.98}
   m_EdgeRadius: 0
---- !u!1 &515484933 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1701450415585090141, guid: 8d1c4e7de46ab9d42942258cf1be6f90, type: 3}
-  m_PrefabInstance: {fileID: 1946650978}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &521824156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3229,6 +3224,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4785119529959865390, guid: e5e031807dfbd5a44a2c33e07a56c421, type: 3}
+      propertyPath: debugBypassNixJump
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5e031807dfbd5a44a2c33e07a56c421, type: 3}
 --- !u!1 &1223218557
@@ -4794,7 +4793,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621459972}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 170, y: -30, z: 10}
+  m_LocalPosition: {x: 170, y: 20, z: 10}
   m_LocalScale: {x: 250, y: 250, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5254,7 +5253,6 @@ GameObject:
   - component: {fileID: 1773131975}
   - component: {fileID: 1773131983}
   - component: {fileID: 1773131977}
-  - component: {fileID: 1773131976}
   - component: {fileID: 1773131982}
   - component: {fileID: 1773131979}
   - component: {fileID: 1773131978}
@@ -5366,11 +5364,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 1305.4377, y: 217.79645}
+  scrollPos: {x: 1500.5626, y: 470.63876}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
-  blockViewHeight: 288.8
-  zoom: 1
+  blockViewHeight: 430.8
+  zoom: 0.6700003
   scrollViewRect:
     serializedVersion: 2
     x: -343
@@ -5378,9 +5376,8 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1773131972}
-  selectedCommands:
-  - {fileID: 1773131976}
+  - {fileID: 1773131968}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -5650,7 +5647,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -1148.4497
     y: 73.18381
-    width: 75.6
+    width: 75.074615
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5728,7 +5725,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 618
     y: 48
-    width: 191.6
+    width: 192.0895
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5754,7 +5751,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 229.87793
     y: 77.58537
-    width: 186
+    width: 186.11934
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5780,7 +5777,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 111.06184
     y: -59.560966
-    width: 196.4
+    width: 195.67157
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5866,7 +5863,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -622.83765
     y: 71.70356
-    width: 158
+    width: 156.26862
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5911,7 +5908,6 @@ MonoBehaviour:
   - {fileID: 1773132064}
   - {fileID: 1773132063}
   - {fileID: 1773131977}
-  - {fileID: 1773131976}
   suppressAllAutoSelections: 0
 --- !u!114 &1773131973
 MonoBehaviour:
@@ -5929,7 +5925,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -835.5212
     y: 68.2887
-    width: 170.8
+    width: 169.40292
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -5995,34 +5991,6 @@ MonoBehaviour:
   targetComponentText: MasterControl
   targetMethod: SwitchPlayerIchi
   targetMethodText: 'SwitchPlayerIchi (): Void'
-  methodParameters: []
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
---- !u!114 &1773131976
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773131954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 25
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 515484933}
-  targetComponentAssemblyName: TarodevController.PlayerController, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: PlayerController
-  targetMethod: DisableSelf
-  targetMethodText: 'DisableSelf (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
@@ -6626,7 +6594,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -438.44308
     y: 79.033
-    width: 149.2
+    width: 149.10443
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -6813,7 +6781,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -264.27237
     y: 75.15507
-    width: 126.8
+    width: 126.41788
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -8327,7 +8295,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -1046.5641
     y: 70.89789
-    width: 171.6
+    width: 172.98502
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -8752,7 +8720,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -115.49182
     y: -42.918083
-    width: 116.4
+    width: 116.86564
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -8917,7 +8885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3898240174925867757, guid: e32d6861eabe76540ad5022e8c9ab8aa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 37
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 3898240174925867757, guid: e32d6861eabe76540ad5022e8c9ab8aa, type: 3}
       propertyPath: m_LocalPosition.z
