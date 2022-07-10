@@ -22,7 +22,7 @@ public class San : PlayerType {
         sanVisibleObjectGroup = transform.Find("X-Flipper").gameObject;
     }
 
-    void Update() {
+    override protected void Update() {
         if (controller.isActivePlayer && Input.GetButtonDown("Action")) {
             if (asploding)
                 Asplode();
@@ -40,6 +40,8 @@ public class San : PlayerType {
             propelDash = Vector3.zero;
         if ((!controller.ColDown && propelDash.y <= 0) || (!controller.ColUp && propelDash.y >= 0))
             transform.parent.position += propelDash * Time.deltaTime;
+
+        base.Update();
     }
 
     void FixedUpdate() {

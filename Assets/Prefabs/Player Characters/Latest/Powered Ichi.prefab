@@ -19900,7 +19900,6 @@ MonoBehaviour:
   facingDirection: 1
   debugBypassNixJump: 1
   targetNPC: {fileID: 0}
-  targetDialog: {fileID: 0}
   renderer2: {fileID: 0}
   _characterBounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -20035,10 +20034,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feaa90f43b3411941b7415d7396079a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  propel: {x: 0, y: 0, z: 0}
   projectileSpawnpoint: {fileID: 5676882898326169371}
   shootDelay: 0.175
   triggerDelay: 0.1
   firingPower: 0.5
+  knockbackPower: 1
   shootingButton: 304
   ProjectilePrefab: {fileID: 3386715862544041693, guid: cb063889b1fc20b4b9faf7310f77c33d, type: 3}
   playerAnimator: {fileID: 5676882899279678628}

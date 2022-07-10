@@ -60,7 +60,7 @@ public class Checkpoint : MonoBehaviour
             poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.15F + Vector3.up * 3.5F, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
             poleObj.localPosition = Vector3.Lerp(poleObj.localPosition, Vector3.down / 2, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
             
-            float rotator = poleObj.localRotation.eulerAngles.y + Time.deltaTime * 20;
+            float rotator = poleObj.localRotation.eulerAngles.y + Time.deltaTime * 32;
 
             poleObj.localRotation = Quaternion.Euler(0, rotator, 0);
         }

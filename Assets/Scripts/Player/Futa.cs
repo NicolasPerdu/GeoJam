@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Futa : PlayerType {
 
-    private Vector3 propelDash = Vector3.zero;
-
     [SerializeField] private float dashDelay = 1f;
     [SerializeField] private float propelPower = 1f;
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -16,7 +14,7 @@ public class Futa : PlayerType {
     private float? lastDash;
     private bool canDash = true;
 
-    private void Update() {
+    override protected void Update() {
         if (controller.isActivePlayer && canDash && !controller.Grounded && Input.GetButtonDown("Action") && (lastDash == null || Time.timeSinceLevelLoad - lastDash >= dashDelay)) {
             lastDash = Time.timeSinceLevelLoad;
             canDash = false;
@@ -24,26 +22,27 @@ public class Futa : PlayerType {
             controller.PauseGravity(suspendAirTime);
         }
 
-        propelDash *= .985F;
-        if (propelDash.magnitude < .5F)
-            propelDash = Vector3.zero;
-        if ((!controller.ColDown && propelDash.y <= 0) || (!controller.ColUp && propelDash.y >= 0))
-            transform.root.position += propelDash * Time.deltaTime;
+        if (dashing && lastDash == null || (lastDash != null && Time.timeSinceLevelLoad - lastDash >= suspendAirTime))
+            Propel();
+
+        Vector3 newpropel = propel * .98F;
+        propel = (newpropel - propel) * MasterControl.TimeRelator;
+
+
+
+        if (propel.magnitude < .01F)
+            propel = Vector3.zero;
         
         if (controller.Grounded)
             canDash = true;
-    }
 
-    private void FixedUpdate() {
-        if (dashing && lastDash != null && Time.timeSinceLevelLoad - lastDash >= suspendAirTime){
-            Propel();
-        }
+        base.Update();
     }
 
     private void Propel() {
         lastDash = null;
-        propelDash = Mathf.Sign(Input.GetAxis("Vertical")) * propelPower * Vector3.up * 100;
-        if (propelDash.y < 0)
-            propelDash.y *= .74F;
+        propel = Mathf.Sign(Input.GetAxis("Vertical")) * propelPower * Vector3.up * 2.4F;
+        if (propel.y < 0)
+            propel.y *= .74F;
     }
 }

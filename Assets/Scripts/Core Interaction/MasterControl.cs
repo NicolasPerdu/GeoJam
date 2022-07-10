@@ -5,6 +5,9 @@ using Fungus;
 
 public class MasterControl : MonoBehaviour
 {
+    const float FIXED_DELAY_MS = .02F;
+    static public float TimeRelator => Time.deltaTime / Time.fixedDeltaTime;
+
     public Flowchart narrative;
     static public MasterControl main;
     [HideInInspector]public PlayerAvatar[] avatarList;

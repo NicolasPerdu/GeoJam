@@ -172,7 +172,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3c5d2b147cfbc83488a7d69ebffa266c, type: 2}
+  - {fileID: 2100000, guid: ee56af13bab4b424f804c5c6604f9a68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -514,7 +514,7 @@ MonoBehaviour:
   - {fileID: 5881463087568709829}
   - {fileID: 5881463086404773943}
   - {fileID: 6798222918996109001}
-  activeMaterial: {fileID: 2100000, guid: ff16fb4a90fe84bec9c8f29698aa0eed, type: 2}
+  activeMaterial: {fileID: 2100000, guid: ee56af13bab4b424f804c5c6604f9a68, type: 2}
   inActiveMaterial: {fileID: 2100000, guid: 3c5d2b147cfbc83488a7d69ebffa266c, type: 2}
   meshRenderer: {fileID: 5881463086938743732}
   respawnButton: 114

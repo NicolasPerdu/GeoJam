@@ -288,12 +288,10 @@ namespace TarodevController {
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
 
-        [HideInInspector]public Vector2 modSpeed = Vector2.zero;
-
 
         public void ResetValues()
         {
-            modSpeed = Vector2.zero;
+            
         }
 
         private void FallDeathCheck()

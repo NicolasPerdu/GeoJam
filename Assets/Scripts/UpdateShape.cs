@@ -28,7 +28,7 @@ public class UpdateShape : MonoBehaviour
             mesh.vertices = vertices;
             mesh.RecalculateBounds();
             buffer = 0;
-            waitTillNextBlurk = Random.RandomRange(.15F, (float)timeMax);
+            waitTillNextBlurk = Random.Range(.15F, (float)timeMax);
         }
         buffer = buffer + Time.deltaTime;
     }

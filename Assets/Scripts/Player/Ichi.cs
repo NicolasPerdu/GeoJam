@@ -10,6 +10,7 @@ public class Ichi : PlayerType
     [SerializeField] private float shootDelay = 1f;
     [SerializeField] private float triggerDelay = .05f;
     [SerializeField] private float firingPower = 1f;
+    [SerializeField] private float knockbackPower = 1f;
     [SerializeField] private KeyCode shootingButton;
     [SerializeField] private Projectile ProjectilePrefab; 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -20,10 +21,8 @@ public class Ichi : PlayerType
     
     private float? triggerTime = null;
 
-    private Vector3 knockback = Vector3.zero;
 
-
-    private void Update() {
+    override protected void Update() {
         if (controller.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
             triggerTime = Time.timeSinceLevelLoad;
         }
@@ -34,15 +33,18 @@ public class Ichi : PlayerType
             triggerTime = null;
         }
 
-        knockback *= .98F;
-        if (knockback.magnitude < .5)
-            knockback = Vector3.zero;
+        Vector3 tempPropel = propel * .945F;
 
-        if (knockback.x < 0 && controller.ColLeft) knockback.x = 0;
-        if (knockback.x > 0 && controller.ColRight) knockback.x = 0;
+        propel += (tempPropel - propel) * MasterControl.TimeRelator;
 
-        transform.root.position += knockback * Time.deltaTime;
 
+        if (propel.magnitude < .01F)
+            propel = Vector3.zero;
+
+        if (propel.x < 0 && controller.ColLeft) propel.x = 0;
+        if (propel.x > 0 && controller.ColRight) propel.x = 0;
+
+        base.Update();
     }
 
     private void FixedUpdate() {
@@ -61,6 +63,6 @@ public class Ichi : PlayerType
         lastShot = Time.timeSinceLevelLoad;
         
         controller.PauseMovement(triggerStunTime);
-        knockback = Mathf.Sign(playerAnimator.FacingDirection) * Vector3.left * 90 + Vector3.up * 15;
+        propel = Mathf.Sign(playerAnimator.FacingDirection) * Vector3.left * .82F * knockbackPower + Vector3.up * .24F;
     }
 }
