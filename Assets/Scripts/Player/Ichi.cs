@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TarodevController;
 using UnityEngine;
 
-public class Ichi : MonoBehaviour
+public class Ichi : PlayerType
 {
     [SerializeField] private Transform projectileSpawnpoint;
     [SerializeField] private float shootDelay = 1f;

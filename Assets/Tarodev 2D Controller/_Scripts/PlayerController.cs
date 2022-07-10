@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace TarodevController {
     /// <summary>
@@ -28,6 +27,8 @@ namespace TarodevController {
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
+        public SpriteRenderer renderer2;
+        private float interactionRadius = 2f;
         private Vector2 move;
 
 
@@ -192,7 +193,28 @@ namespace TarodevController {
         [SerializeField] private float _deAcceleration = 60f;
         [SerializeField] private float _apexBonus = 2;
 
+
+
         private void CalculateWalk() {
+            /*if(Input.Dialog) {
+                Debug.Log("Dialog !");
+                if (targetDialog != null && targetDialog.choicesGenerated) {
+                    targetDialog.pushButton();
+                } else {
+                    findTargetNPC();
+                    move = Vector2.zero;
+
+                    if (targetDialog != null) {
+                        if (targetDialog.dialogEnabled) {
+                            continuStory();
+                        } else {
+                            CheckForNearbyNPCInky();
+                        }
+                    }
+                }
+            }*/
+            
+
             if (Input.X != 0) {
                 // Set horizontal move speed
                 _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;
@@ -346,33 +368,33 @@ namespace TarodevController {
         #endregion
 
         private void OnTriggerEnter(Collider other) {
-            if (other.tag == "Death") {
-                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>()) {
-                    if (checkpoint.Active) {
-                        checkpoint.Respawn();
-                    }
-                    break;
-                }
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                return;
-            }
-
+            Debug.Log("Trigger enter!");
             Teleporter tp = other.gameObject.GetComponent<Teleporter>();
             if (tp) {
-                //Debug.Log("Hit Teleport: " + other.gameObject.name);
+                Debug.Log("Hit Teleport: " + other.gameObject.name);
                 transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
                 _groundLayer = tp.DestinationLane.GroundLayer;
             }
 
             Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
             if (cp) {
-                //Debug.Log("Hit CP!");
+                Debug.Log("Hit CP!");
                 cp.Activate();
-            } 
+            }
+            if (other.CompareTag("Death"))
+            {
+                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
+                {
+                    if (checkpoint.Active)
+                    {
+                        checkpoint.Respawn();
+                    }
+                    break;
+                }
+            }
         }
 
         void OnColliderEnter2D(Collision2D c) {
-            _currentHorizontalSpeed = 0;
             if (c.gameObject.tag == "Bouncer")
             {
                 Vector2 nAverage = Vector3.zero;

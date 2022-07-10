@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TarodevController;
 using UnityEngine;
 
-public class San : MonoBehaviour {
+public class San : PlayerType {
 
     private Vector3 propelDash = Vector3.zero;
 
