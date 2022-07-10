@@ -106,7 +106,7 @@ Shader "BG/Trippy"
 
 	float2 v = (vertex_output.uv - 1 / 2.) / min(1,1) * 30.;
 	float2 vv = v;// float2 vvv = v;
-	float ft = _Time.y + 360.1;
+	float ft = _Time.x + 360.1;
 	float tm = ft * 0.1;
 	float tm2 = ft * 0.3;
 	float2 mspt = (vec2(
@@ -128,7 +128,7 @@ Shader "BG/Trippy"
 	float2 shift = vec2(0.033, 0.14);
 	float2 shift2 = vec2(-0.023, -0.22);
 	float Z = 0.4 + mspt.y*0.3;
-	float m = 0.99 + sin(_Time.y*0.03)*0.003;
+	float m = 0.99 + (sin(_Time.w) > 0 ? 1 : -1) * 0.00025 / 1000;
 	for (int i = 0; i < l; i++) {
 		float r = dot(v,v);
 		float r2 = dot(vv,vv);
@@ -176,7 +176,7 @@ Shader "BG/Trippy"
 	float3 col = vec3(gv.xy, 1.);
 
 	//float m = 0.;
-	float t = _Time.y / 2.;
+	float t = _Time.y / 3.9;
 
 
 	float dist = length(uv * 4.);
@@ -194,11 +194,11 @@ Shader "BG/Trippy"
 		}
 	}
 
-	float rand = random(vec3(vertex_output.uv, _Time));
+	float rand = random(vec3(vertex_output.uv, _Time.w / 20));
 
 	float inp = 1.1;
 
-	if (_Time.x % 997 < 500) {
+	if (_Time.y % 997 < 500) {
 		inp = 3.2;
 	}
 
