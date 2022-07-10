@@ -12,10 +12,12 @@ namespace TarodevController {
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
     public class PlayerController : MonoBehaviour, IPlayerController {
+
+        public const float VERTICAL_DEATH_LINE = -20F;
         
         [HideInInspector]public int facingDirection = 1;
 
-        public bool isActivePlayer => MasterControl.main.activeCharacter != null && MasterControl.main.activeCharacter.transform == transform;
+        public bool isActivePlayer => MasterControl.main.activeAvatar != null && MasterControl.main.activeAvatar.transform == transform;
 
         public bool debugBypassNixJump = false;
 
@@ -66,6 +68,7 @@ namespace TarodevController {
             CalculateJump(); // Possibly overrides vertical
 
             MoveCharacter(); // Actually perform the axis movement
+            FallDeathCheck();
         }
         public void ToggleCanJump()
         {
@@ -78,8 +81,8 @@ namespace TarodevController {
             if (isActivePlayer)
             {
                 	Input = new FrameInput {
-                		JumpDown = freezingJump || !canJump? false : UnityEngine.Input.GetButtonDown("Jump"),
-                		JumpUp = freezingJump || !canJump? false : UnityEngine.Input.GetButtonUp("Jump"),
+                		JumpDown = freezingJump || !canJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
+                		JumpUp = freezingJump || !canJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
                 		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
                     	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
                 };
@@ -285,6 +288,29 @@ namespace TarodevController {
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
 
+        [HideInInspector]public Vector2 modSpeed = Vector2.zero;
+
+
+        public void ResetValues()
+        {
+            modSpeed = Vector2.zero;
+        }
+
+        private void FallDeathCheck()
+        {
+            if (transform.position.y > VERTICAL_DEATH_LINE) return;
+
+
+            foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
+            {
+                if (checkpoint.Active)
+                {
+                    checkpoint.Respawn();
+                    break;
+                }
+            }
+        }
+
         private void CalculateJumpApex() {
             if (!_colDown) {
                 // Gets stronger the closer to the top of the jump
@@ -368,29 +394,18 @@ namespace TarodevController {
         #endregion
 
         private void OnTriggerEnter(Collider other) {
-            Debug.Log("Trigger enter!");
+            //Debug.Log("Trigger enter!");
             Teleporter tp = other.gameObject.GetComponent<Teleporter>();
             if (tp) {
-                Debug.Log("Hit Teleport: " + other.gameObject.name);
+                //Debug.Log("Hit Teleport: " + other.gameObject.name);
                 transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
                 _groundLayer = tp.DestinationLane.GroundLayer;
             }
 
             Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
             if (cp) {
-                Debug.Log("Hit CP!");
+                //Debug.Log("Hit CP!");
                 cp.Activate();
-            }
-            if (other.CompareTag("Death"))
-            {
-                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
-                {
-                    if (checkpoint.Active)
-                    {
-                        checkpoint.Respawn();
-                    }
-                    break;
-                }
             }
         }
 

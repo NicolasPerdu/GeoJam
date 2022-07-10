@@ -16,27 +16,21 @@ public class Futa : PlayerType {
     private float? lastDash;
     private bool canDash = true;
 
-    PlayerController controllerReference = null;
-
-    private void Awake() {
-        controllerReference = GetComponentInParent<PlayerController>();
-    }
-
     private void Update() {
-        if (controllerReference.isActivePlayer && canDash && !controllerReference.Grounded && Input.GetButtonDown("Action") && (lastDash == null || Time.timeSinceLevelLoad - lastDash >= dashDelay)) {
+        if (controller.isActivePlayer && canDash && !controller.Grounded && Input.GetButtonDown("Action") && (lastDash == null || Time.timeSinceLevelLoad - lastDash >= dashDelay)) {
             lastDash = Time.timeSinceLevelLoad;
             canDash = false;
             dashing = true;
-            controllerReference.PauseGravity(suspendAirTime);
+            controller.PauseGravity(suspendAirTime);
         }
 
         propelDash *= .985F;
         if (propelDash.magnitude < .5F)
             propelDash = Vector3.zero;
-        if ((!controllerReference.ColDown && propelDash.y <= 0) || (!controllerReference.ColUp && propelDash.y >= 0))
+        if ((!controller.ColDown && propelDash.y <= 0) || (!controller.ColUp && propelDash.y >= 0))
             transform.root.position += propelDash * Time.deltaTime;
         
-        if (controllerReference.Grounded)
+        if (controller.Grounded)
             canDash = true;
     }
 

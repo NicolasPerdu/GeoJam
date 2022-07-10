@@ -22,14 +22,9 @@ public class Ichi : PlayerType
 
     private Vector3 knockback = Vector3.zero;
 
-    PlayerController controllerReference = null;
-
-    private void Awake() {
-        controllerReference = GetComponentInParent<PlayerController>();
-    }
 
     private void Update() {
-        if (controllerReference.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
+        if (controller.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
             triggerTime = Time.timeSinceLevelLoad;
         }
 
@@ -43,8 +38,8 @@ public class Ichi : PlayerType
         if (knockback.magnitude < .5)
             knockback = Vector3.zero;
 
-        if (knockback.x < 0 && controllerReference.ColLeft) knockback.x = 0;
-        if (knockback.x > 0 && controllerReference.ColRight) knockback.x = 0;
+        if (knockback.x < 0 && controller.ColLeft) knockback.x = 0;
+        if (knockback.x > 0 && controller.ColRight) knockback.x = 0;
 
         transform.root.position += knockback * Time.deltaTime;
 
@@ -65,7 +60,7 @@ public class Ichi : PlayerType
         shooting = false;
         lastShot = Time.timeSinceLevelLoad;
         
-        controllerReference.PauseMovement(triggerStunTime);
+        controller.PauseMovement(triggerStunTime);
         knockback = Mathf.Sign(playerAnimator.FacingDirection) * Vector3.left * 90 + Vector3.up * 15;
     }
 }

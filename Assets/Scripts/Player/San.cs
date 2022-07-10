@@ -13,38 +13,36 @@ public class San : PlayerType {
     [SerializeField] private GameObject kaboomPrefab;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private float aslposionTime;
-    private GameObject sanVisibleObjects;
+    private GameObject sanVisibleObjectGroup;
     private float igniteTime;
     private bool asploding = false;
 
-    PlayerController controllerReference = null;
 
-    private void Awake() {
-        controllerReference = GetComponentInParent<PlayerController>();
-        sanVisibleObjects = transform.Find("X-Flipper").gameObject;
+    void Start() {
+        sanVisibleObjectGroup = transform.Find("X-Flipper").gameObject;
     }
 
-    private void Update() {
-        if (controllerReference.isActivePlayer && Input.GetButtonDown("Action")) {
+    void Update() {
+        if (controller.isActivePlayer && Input.GetButtonDown("Action")) {
             if (asploding)
                 Asplode();
             else
             {
                 asploding = true;
                 igniteTime = Time.timeSinceLevelLoad;
-                controllerReference.PauseMovement(3);
-                controllerReference.PauseJumping(3);
+                controller.PauseMovement(3);
+                controller.PauseJumping(3);
             }
         }
 
         propelDash *= .985F;
         if (propelDash.magnitude < .5F)
             propelDash = Vector3.zero;
-        if ((!controllerReference.ColDown && propelDash.y <= 0) || (!controllerReference.ColUp && propelDash.y >= 0))
+        if ((!controller.ColDown && propelDash.y <= 0) || (!controller.ColUp && propelDash.y >= 0))
             transform.parent.position += propelDash * Time.deltaTime;
     }
 
-    private void FixedUpdate() {
+    void FixedUpdate() {
         if (asploding && Time.timeSinceLevelLoad - igniteTime >= asplodeDelay) {
             Asplode();
         }
@@ -53,8 +51,8 @@ public class San : PlayerType {
     private void Asplode()
     {
         Instantiate(kaboomPrefab, transform.position, Quaternion.identity);
-        sanVisibleObjects.SetActive(false);
-        controllerReference.enabled = false;
+        sanVisibleObjectGroup.SetActive(false);
+        controller.enabled = false;
         asploding = false;
         StartCoroutine("Asplosion");
     }
@@ -67,8 +65,8 @@ public class San : PlayerType {
             if (checkpoint.Active)
             {
                 checkpoint.RespawnSan();
-                sanVisibleObjects.SetActive(true);
-                controllerReference.enabled = true;
+                sanVisibleObjectGroup.SetActive(true);
+                controller.enabled = true;
             }
             break;
         }

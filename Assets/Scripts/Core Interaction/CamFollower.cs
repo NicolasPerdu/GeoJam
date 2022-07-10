@@ -27,8 +27,8 @@ public class CamFollower : MonoBehaviour
     {
         if (followObject != null)
             CameraChaseObject();
-        else if (MasterControl.main.activeCharacter != null)
-            followObject = MasterControl.main.activeCharacter.transform;
+        else if (MasterControl.main.activeAvatar != null)
+            followObject = MasterControl.main.activeAvatar.transform;
     }
 
     void CameraChaseObject()

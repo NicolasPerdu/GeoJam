@@ -16,13 +16,22 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] public bool Active;
 
     private bool aboutToRespawn;
+
+    private float timeDeactivate = 0;
+    private float timeActivate = 0;
+
+    Transform poleObj;
+
     private void Awake() {
         if (Active) {
             meshRenderer.material = activeMaterial;
+
         }
         else {
             meshRenderer.material = inActiveMaterial;
         }
+
+        poleObj = transform.Find("Pole");
     }
 
     public void Activate() {
@@ -30,19 +39,40 @@ public class Checkpoint : MonoBehaviour
             cp.DeActivate();
         }
 
+        if (!Active)  
+            timeActivate = Time.timeSinceLevelLoad;
         Active = true;
         meshRenderer.material = activeMaterial;
     }
 
     public void DeActivate() {
+        if (Active)  
+            timeDeactivate = Time.timeSinceLevelLoad;
         Active = false;
         meshRenderer.material = inActiveMaterial;
     }
 
     private void Update() {
-        if (Active && Input.GetKey(respawnButton)) {
-            aboutToRespawn = true;
+        if (Active) {
+            if (Input.GetKey(respawnButton))
+                aboutToRespawn = true;
+            
+            poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.15F + Vector3.up * 3.5F, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
+            poleObj.localPosition = Vector3.Lerp(poleObj.localPosition, Vector3.down / 2, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
+            
+            float rotator = poleObj.localRotation.eulerAngles.y + Time.deltaTime * 20;
+
+            poleObj.localRotation = Quaternion.Euler(0, rotator, 0);
         }
+        else
+        {
+            poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.25F + Vector3.up * 2, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
+            poleObj.localPosition = Vector3.Lerp(poleObj.localPosition, Vector3.down, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
+
+            poleObj.localRotation = Quaternion.Lerp(poleObj.localRotation, Quaternion.identity, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
+        }
+
+
     }
 
     private void FixedUpdate() {
@@ -56,10 +86,14 @@ public class Checkpoint : MonoBehaviour
     {
         int spawnIndex = 0;
 
-        foreach(PlayerController currPlayer in FindObjectsOfType<PlayerController>()) {
-            currPlayer._groundLayer = layer;
-            currPlayer.transform.position = spawnPoints[spawnIndex].position;
-            spawnIndex++;
+        foreach(PlayerType playerChr in FindObjectsOfType<PlayerType>()) {
+            if (playerChr.avatar.playable)
+            {
+                playerChr.controller.ResetValues();
+                playerChr.controller._groundLayer = layer;
+                playerChr.transform.root.position = spawnPoints[spawnIndex].position;
+                spawnIndex++;
+            }
         }
     }
 

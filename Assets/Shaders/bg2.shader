@@ -187,7 +187,7 @@ Shader "BG/Trippy"
 		for (int y = -2; y <= 2; y++) {
 			float2 offset = vec2(x, y);
 			float d = length(gv - offset * 0.7)*1.75;
-			float tNorm = sin(dist - t) * .5 + 0.5;
+			float tNorm = sin(dist - t) * .25 + 0.5;
 			float r = lerp(0.35, 1.8, tNorm);
 
 			m += smoothstep(r*1.0001, r, d);
