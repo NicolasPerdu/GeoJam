@@ -16,7 +16,12 @@ public class PlayerType : MonoBehaviour
     }
 
     virtual protected void Update()
-    {
+    {    
+        if ((controller.ColLeft && propel.x < 0) || (controller.ColRight && propel.x > 0))
+            propel.x = 0;
+        if ((controller.ColDown && propel.y < 0) || (controller.ColUp && propel.y > 0))
+            propel.y = 0;
+        
         transform.root.position += propel * MasterControl.TimeRelator;
     }
 }

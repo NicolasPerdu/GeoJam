@@ -10095,6 +10095,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2621914788822078348, guid: a1260ef9823ddcb4fb8ab601b880cd22, type: 3}
+      propertyPath: playerCharacterNumber
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2621914788822078351, guid: a1260ef9823ddcb4fb8ab601b880cd22, type: 3}
       propertyPath: m_Name
       value: Powered Futa
@@ -10517,6 +10521,10 @@ PrefabInstance:
     - target: {fileID: 6282658368475831252, guid: 01683549dbeff9c4a963a788cf951d5c, type: 3}
       propertyPath: m_Name
       value: Powered Ichi
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282658368475831253, guid: 01683549dbeff9c4a963a788cf951d5c, type: 3}
+      propertyPath: playerCharacterNumber
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01683549dbeff9c4a963a788cf951d5c, type: 3}

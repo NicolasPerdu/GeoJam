@@ -34,6 +34,8 @@ namespace TarodevController {
         private float interactionRadius = 2f;
         private Vector2 move;
 
+        private PlayerType playerType;
+
 
         private bool freezingMovement = false;
         private bool freezingGravity = false;
@@ -51,6 +53,7 @@ namespace TarodevController {
         void Start()
         {
             if (debugBypassNixJump) canJump = true;
+            playerType = transform.root.GetComponentInChildren<PlayerType>();
         }
         
         private void Update() {
@@ -354,8 +357,8 @@ namespace TarodevController {
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter() {
             var pos = transform.position;
-            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
-            var move = RawMovement * Time.deltaTime;
+            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime;// + playerType.propel * MasterControl.TimeRelator; // Used externally
+            var move = RawMovement;
             var furthestPoint = pos + move;
 
             // check furthest movement. If nothing hit, move and don't do extra checks

@@ -15,6 +15,15 @@ public class Futa : PlayerType {
     private bool canDash = true;
 
     override protected void Update() {
+
+        if (controller.Grounded)
+        {
+            canDash = true;
+            propel.y = 0;
+            dashing = false;
+        }
+
+
         if (controller.isActivePlayer && canDash && !controller.Grounded && Input.GetButtonDown("Action") && (lastDash == null || Time.timeSinceLevelLoad - lastDash >= dashDelay)) {
             lastDash = Time.timeSinceLevelLoad;
             canDash = false;
@@ -22,26 +31,24 @@ public class Futa : PlayerType {
             controller.PauseGravity(suspendAirTime);
         }
 
-        if (dashing && lastDash == null || (lastDash != null && Time.timeSinceLevelLoad - lastDash >= suspendAirTime))
+        if (dashing && lastDash != null && Time.timeSinceLevelLoad - lastDash >= suspendAirTime)
             Propel();
 
         Vector3 newpropel = propel * .98F;
-        propel = (newpropel - propel) * MasterControl.TimeRelator;
+        propel += (newpropel - propel) * MasterControl.TimeRelator;
 
 
 
-        if (propel.magnitude < .01F)
-            propel = Vector3.zero;
+
         
-        if (controller.Grounded)
-            canDash = true;
+       
 
         base.Update();
     }
 
     private void Propel() {
         lastDash = null;
-        propel = Mathf.Sign(Input.GetAxis("Vertical")) * propelPower * Vector3.up * 2.4F;
+        propel = Mathf.Sign(Input.GetAxis("Vertical")) * propelPower * Vector3.up * 0.4F;
         if (propel.y < 0)
             propel.y *= .74F;
     }

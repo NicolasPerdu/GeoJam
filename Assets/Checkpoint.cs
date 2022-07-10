@@ -57,7 +57,7 @@ public class Checkpoint : MonoBehaviour
             if (Input.GetKey(respawnButton))
                 aboutToRespawn = true;
             
-            poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.15F + Vector3.up * 3.5F, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
+            poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.15F + Vector3.up * 4F, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
             poleObj.localPosition = Vector3.Lerp(poleObj.localPosition, Vector3.down / 2, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 50);
             
             float rotator = poleObj.localRotation.eulerAngles.y + Time.deltaTime * 32;
@@ -66,7 +66,7 @@ public class Checkpoint : MonoBehaviour
         }
         else
         {
-            poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.25F + Vector3.up * 2, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
+            poleObj.localScale = Vector3.Lerp(poleObj.localScale, Vector3.one * 1.15F + Vector3.up * 2, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
             poleObj.localPosition = Vector3.Lerp(poleObj.localPosition, Vector3.down, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
 
             poleObj.localRotation = Quaternion.Lerp(poleObj.localRotation, Quaternion.identity, (Time.timeSinceLevelLoad - timeActivate) * Time.deltaTime * 100);
