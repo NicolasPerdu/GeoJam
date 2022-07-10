@@ -12,7 +12,7 @@ public class TitleController : MonoBehaviour
 
     void Update()
     {
-        if(Input.anyKey) {
+        if(Input.GetButtonDown("Action") || Input.GetButtonDown("Jump")) {
             SceneManager.LoadScene("2DWorld");
         }
     }
