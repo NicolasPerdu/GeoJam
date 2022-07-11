@@ -20159,8 +20159,8 @@ Cloth:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5226380390119046469}
   m_Enabled: 1
-  m_StretchingStiffness: 0
-  m_BendingStiffness: 1
+  m_StretchingStiffness: 0.05
+  m_BendingStiffness: 0.1
   m_UseTethers: 1
   m_UseGravity: 1
   m_Damping: 0.3
@@ -20177,15 +20177,15 @@ Cloth:
   m_Coefficients:
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 18
+  - maxDistance: 10.5
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 11.7
-    collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 3.4028235e+38
+  - maxDistance: 16.3
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 16.62
+  - maxDistance: 3.4028235e+38
+    collisionSphereDistance: 3.4028235e+38
+  - maxDistance: 10.5
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 0
     collisionSphereDistance: 0
@@ -20193,7 +20193,7 @@ Cloth:
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 7.4
+  - maxDistance: 15.92
     collisionSphereDistance: 3.16
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
@@ -20256,6 +20256,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.17923808, y: 0.99218106, z: 0.051956117}
-    m_Extent: {x: 1.2431015, y: 0.2341758, z: 0.9323993}
+    m_Center: {x: -0.1888336, y: 0.9630922, z: 0.06596774}
+    m_Extent: {x: 1.244135, y: 0.255087, z: 0.9334657}
   m_DirtyAABB: 0
