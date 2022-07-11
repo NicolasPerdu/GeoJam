@@ -22,6 +22,6 @@ public class PlayerType : MonoBehaviour
         if ((controller.ColDown && propel.y < 0) || (controller.ColUp && propel.y > 0))
             propel.y = 0;
         
-        transform.root.position += propel * MasterControl.TimeRelator;
+        //transform.root.position += propel * MasterControl.TimeRelator;
     }
 }

@@ -29,8 +29,12 @@ Shader "GLSL basic shader" { // defines the name of the shader
 			 vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
 
 			uv *= 3.0;
-			vec2 gv = fract(uv) - 0.5;
+			vec2 gv = fract(uv);
 			vec3 col = vec3(gv.xy, 1.);
+
+			col.x *= .2;
+			col.y *= .1;
+			col.z *= 1.2;
 
 			float m = 0.;
 			float t = iTime / 2.;

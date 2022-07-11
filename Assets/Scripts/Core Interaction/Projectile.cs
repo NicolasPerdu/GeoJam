@@ -13,8 +13,11 @@ public class Projectile : MonoBehaviour
         spawnTime = Time.timeSinceLevelLoad;
     }
 
-    private void FixedUpdate() {
-        transform.position = new Vector3(this.transform.position.x + Speed, this.transform.position.y, this.transform.position.z);
+    private void Update() {
+        //transform.position = new Vector3(this.transform.position.x + Speed, transform.position.y, this.transform.position.z);
+        Vector3 pos = transform.position;
+        pos.x += Speed * MasterControl.TimeRelator;
+        transform.position = pos;
 
 
         if (Time.timeSinceLevelLoad - spawnTime > 10 || 

@@ -87,7 +87,7 @@ namespace TarodevController {
                 		JumpDown = freezingJump || !canJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
                 		JumpUp = freezingJump || !canJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
                 		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
-                    	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
+                    	Dialog = UnityEngine.Input.GetButtonDown("Action") || UnityEngine.Input.GetButtonDown("Jump")
                 };
                 if (Input.JumpDown) {
                     _lastJumpPressed = Time.time;
@@ -261,7 +261,12 @@ namespace TarodevController {
             }
             else if (_colDown) {
                 // Move out of the ground
-                if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
+                if (_currentVerticalSpeed < 0)
+                {
+                    _currentVerticalSpeed = 0;
+                    if (playerType.propel.y > 0)
+                        playerType.propel.y = 0;
+                }
             }
             else {
                 // Add downward force while ascending if we ended the jump early
@@ -357,7 +362,7 @@ namespace TarodevController {
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter() {
             var pos = transform.position;
-            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime;// + playerType.propel * MasterControl.TimeRelator; // Used externally
+            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime + playerType.propel * MasterControl.TimeRelator;// + playerType.propel * MasterControl.TimeRelator; // Used externally
             var move = RawMovement;
             var furthestPoint = pos + move;
 
@@ -424,6 +429,7 @@ namespace TarodevController {
                 nAverage /= i;
 
                 _currentHorizontalSpeed = nAverage.x * 40;
+                _currentVerticalSpeed = nAverage.y * 40;
             }
         }
 

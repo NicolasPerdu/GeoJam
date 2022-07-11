@@ -23,6 +23,7 @@ public class Ichi : PlayerType
 
 
     override protected void Update() {
+
         if (controller.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
             triggerTime = Time.timeSinceLevelLoad;
         }
@@ -37,8 +38,11 @@ public class Ichi : PlayerType
 
         propel += (tempPropel - propel) * MasterControl.TimeRelator;
 
+        if (controller.Grounded)    // ground friction
+            propel.x += (tempPropel * .975F - propel).x * MasterControl.TimeRelator;
 
-        if (propel.magnitude < .01F)
+
+        if (propel.magnitude < .05F)
             propel = Vector3.zero;
 
         if (propel.x < 0 && controller.ColLeft) propel.x = 0;
