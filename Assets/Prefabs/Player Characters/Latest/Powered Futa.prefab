@@ -9891,6 +9891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3490135651500846555}
+  - component: {fileID: 6448820137426921292}
   m_Layer: 0
   m_Name: X-Flipper
   m_TagString: Untagged
@@ -9917,6 +9918,20 @@ Transform:
   m_Father: {fileID: 4601826786362181440}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6448820137426921292
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3490135651500846554}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.7
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0.24, y: 1, z: 0}
 --- !u!1 &3490135651690550377
 GameObject:
   m_ObjectHideFlags: 0
@@ -20088,8 +20103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propel: {x: 0, y: 0, z: 0}
   dashDelay: 0.1
-  propelPower: 1.28
-  playerAnimator: {fileID: 0}
+  propelPower: 1.7
+  playerAnimator: {fileID: 3490135652003104254}
   suspendAirTime: 0.4
 --- !u!114 &391856975461351915
 MonoBehaviour:
@@ -20159,25 +20174,25 @@ Cloth:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5226380390119046469}
   m_Enabled: 1
-  m_StretchingStiffness: 0.05
-  m_BendingStiffness: 0.1
+  m_StretchingStiffness: 0
+  m_BendingStiffness: 0
   m_UseTethers: 1
   m_UseGravity: 1
   m_Damping: 0.3
-  m_ExternalAcceleration: {x: 0, y: 1, z: 0}
+  m_ExternalAcceleration: {x: 0, y: 2, z: 0}
   m_RandomAcceleration: {x: 0, y: 0, z: 0}
-  m_WorldVelocityScale: 1.5
-  m_WorldAccelerationScale: 0.1
-  m_Friction: 0
-  m_CollisionMassScale: 2
+  m_WorldVelocityScale: 1.25
+  m_WorldAccelerationScale: 0.15
+  m_Friction: 0.1
+  m_CollisionMassScale: 1
   m_UseContinuousCollision: 0
   m_UseVirtualParticles: 0
-  m_SolverFrequency: 120
+  m_SolverFrequency: 100
   m_SleepThreshold: 0.01
   m_Coefficients:
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 10.5
+  - maxDistance: 12.5
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 16.3
     collisionSphereDistance: 3.4028235e+38
@@ -20185,7 +20200,7 @@ Cloth:
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 10.5
+  - maxDistance: 12.5
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 0
     collisionSphereDistance: 0
@@ -20193,18 +20208,20 @@ Cloth:
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
-  - maxDistance: 15.92
+  - maxDistance: 9.02
     collisionSphereDistance: 3.16
   - maxDistance: 3.4028235e+38
     collisionSphereDistance: 3.4028235e+38
   - maxDistance: 0
     collisionSphereDistance: 0
-  m_CapsuleColliders: []
+  m_CapsuleColliders:
+  - {fileID: 6448820137426921292}
   m_SphereColliders: []
   m_SelfCollisionDistance: 0
   m_SelfCollisionStiffness: 0.2
   m_SelfAndInterCollisionIndices: 06000000090000000b000000
-  m_VirtualParticleWeights: []
+  m_VirtualParticleWeights:
+  - {x: -0.5, y: -0.5, z: 0}
   m_VirtualParticleIndices: 
 --- !u!137 &1242879907268426142
 SkinnedMeshRenderer:
@@ -20256,6 +20273,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.1888336, y: 0.9630922, z: 0.06596774}
-    m_Extent: {x: 1.244135, y: 0.255087, z: 0.9334657}
+    m_Center: {x: -0.1852206, y: 0.9641863, z: 0.065047085}
+    m_Extent: {x: 1.245552, y: 0.25548053, z: 0.9346578}
   m_DirtyAABB: 0
