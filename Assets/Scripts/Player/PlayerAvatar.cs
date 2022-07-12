@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerAvatar : MonoBehaviour
 {
+
+    public bool defaultIsPlayable = false;
     public bool playable {get; set;}
     [Range(1, 3)]public int playerCharacterNumber = 1;
 
     void Awake()
     {
-         playable = playerCharacterNumber == 1;
+         playable = defaultIsPlayable;
     }
     
     void Start()

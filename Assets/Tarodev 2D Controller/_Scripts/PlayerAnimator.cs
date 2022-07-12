@@ -14,8 +14,8 @@ namespace TarodevController {
         [SerializeField] private Animator _anim;
         [SerializeField] private AudioSource _source;
         [SerializeField] private LayerMask _groundMask;
-        [SerializeField] private ParticleSystem _jumpParticles, _launchParticles;
-        [SerializeField] private ParticleSystem _moveParticles, _landParticles;
+        [SerializeField] public ParticleSystem _jumpParticles, _launchParticles;
+        [SerializeField] public ParticleSystem _moveParticles, _landParticles;
         [SerializeField] private AudioClip[] _footsteps;
         [SerializeField] private float _maxTilt = .1f;
         [SerializeField] private float _tiltSpeed = 1;
@@ -35,8 +35,6 @@ namespace TarodevController {
         void Awake()
         {
             _player = GetComponentInParent<IPlayerController>();
-            
-
         }
 
         void Start()

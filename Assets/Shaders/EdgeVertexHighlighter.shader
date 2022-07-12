@@ -1,5 +1,8 @@
 Shader "EdgeVertexHighlighter" {
     SubShader {
+
+        Tags { "RenderType"="Opaque" }
+        LOD 200
         Pass {
             CGPROGRAM
             #pragma vertex vert
@@ -23,6 +26,7 @@ Shader "EdgeVertexHighlighter" {
                 o.color.x *= .7;
 
                 o.color.xyz *= .5;
+
                 return o;
             }
 

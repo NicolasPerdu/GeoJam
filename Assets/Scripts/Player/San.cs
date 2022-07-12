@@ -51,17 +51,33 @@ public class San : PlayerType {
     }
 
     private void Asplode()
-    {
-        Instantiate(kaboomPrefab, transform.position, Quaternion.identity);
-        sanVisibleObjectGroup.SetActive(false);
+    {        
+
         controller.enabled = false;
         asploding = false;
+
         StartCoroutine("Asplosion");
     }
 
     IEnumerator Asplosion()
     {
-        yield return new WaitForSeconds(aslposionTime);
+
+        Instantiate(kaboomPrefab, transform.position, Quaternion.identity);
+        float delayForBooms = .1F;
+        int numOfBooms = 5; 
+
+        for (int i = 0; i < numOfBooms; i++)
+        {
+            Vector3 asplosionPos = new Vector3(Random.value - .5F, Random.value - .5F, Random.value - .5F) * Random.Range(1.1F, 2.75F);
+            GameObject kaboom = Instantiate(kaboomPrefab, transform.position + asplosionPos, Quaternion.identity);
+            kaboom.transform.localScale = Vector3.one * Random.Range(.5F, .9F);
+            yield return new WaitForSeconds(delayForBooms);
+        }
+
+        sanVisibleObjectGroup.SetActive(false);
+
+
+        yield return new WaitForSeconds(aslposionTime - numOfBooms * delayForBooms);
         foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
         {
             if (checkpoint.Active)

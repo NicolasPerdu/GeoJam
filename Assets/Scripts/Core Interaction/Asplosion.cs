@@ -15,9 +15,12 @@ public class Asplosion : MonoBehaviour
         //meshRen.material = new Material(meshRen.material);
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        transform.localScale *= expandRate;
+        Vector3 newscale = transform.localScale * expandRate;
+
+        transform.localScale += (newscale - transform.localScale) * MasterControl.TimeRelator;
+
 
         Color color = meshRen.material.color;
         color.a = (maxSize - transform.localScale.magnitude) / (maxSize / 2);
