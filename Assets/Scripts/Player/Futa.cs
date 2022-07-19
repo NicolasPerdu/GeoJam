@@ -24,7 +24,15 @@ public class Futa : PlayerType {
         lastPos = transform.root.position;
     }
 
-    override protected void Update() {
+    override protected void Update() 
+    {
+        /*if (!controller.isActivePlayer)
+        {
+            dashing = false;
+            playerAnimator._moveParticles.Stop();
+            _buildupParticles.Stop();
+        }*/
+
         Vector3 movementLastFrame = transform.root.position - lastPos;
 
 
@@ -51,7 +59,8 @@ public class Futa : PlayerType {
         if (controller.Grounded)
         {
             canDash = true;
-            propel.y = 0;
+            if (!laneSwitching)
+                propel.y = 0;
             propelDir = 0;
             dashing = false;
         }

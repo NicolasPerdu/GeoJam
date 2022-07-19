@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4372527372588230879}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 4372527372712559853}
   - component: {fileID: 4372527372712559855}
   - component: {fileID: 4372527372712559854}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tetra (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 4372527372983397102}
   - component: {fileID: 4372527372983397101}
   - component: {fileID: 4372527372983397100}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Powered San
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -173,9 +173,7 @@ MonoBehaviour:
   _characterBounds:
     m_Center: {x: 0, y: -0.25, z: 0}
     m_Extent: {x: 1, y: 1.75, z: 0}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  defaultLaneIndex: 0
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
@@ -234,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultIsPlayable: 0
+  playerType: {fileID: 0}
   playerCharacterNumber: 3
 --- !u!1 &4372527372989313253
 GameObject:
@@ -246,7 +245,7 @@ GameObject:
   - component: {fileID: 4372527372989313254}
   - component: {fileID: 4372527372989313248}
   - component: {fileID: 4372527372989313255}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Move Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5056,7 +5055,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4372527373011462577}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5092,7 +5091,7 @@ GameObject:
   - component: {fileID: 4372527373087607517}
   - component: {fileID: 4372527373087607519}
   - component: {fileID: 4372527373087607518}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Launch Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9960,7 +9959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4372527373267908549}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9996,7 +9995,7 @@ GameObject:
   - component: {fileID: 4372527373332211608}
   - component: {fileID: 4372527373332211610}
   - component: {fileID: 4372527373332211609}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tetra (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10079,7 +10078,7 @@ GameObject:
   - component: {fileID: 4372527373368695294}
   - component: {fileID: 4372527373368695288}
   - component: {fileID: 4372527373368695295}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tetra (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10162,7 +10161,7 @@ GameObject:
   - component: {fileID: 4372527373443489832}
   - component: {fileID: 4372527373443489834}
   - component: {fileID: 4372527373443489833}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10244,7 +10243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4372527373481036920}
   - component: {fileID: 4372527373481036921}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: San
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10280,9 +10279,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   propel: {x: 0, y: 0, z: 0}
-  asplodeDelay: 0
+  laneIndex: 0
+  laneSwitching: 0
+  asplodeDelay: 1.5
   triggerDelay: 0.05
-  propelPower: 1
+  propelPower: 0.7
   kaboomPrefab: {fileID: 6307388349401052834, guid: 7bb3131819c39d346aad12bae531141b, type: 3}
   playerAnimator: {fileID: 4372527373490842743}
   aslposionTime: 2.3
@@ -10297,7 +10298,7 @@ GameObject:
   - component: {fileID: 4372527373490842737}
   - component: {fileID: 4372527373490842743}
   - component: {fileID: 4372527373490842736}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10459,9 +10460,9 @@ GameObject:
   - component: {fileID: 4372527373596247137}
   - component: {fileID: 4372527373596247138}
   - component: {fileID: 42822293613809222}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: San Parent
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10544,7 +10545,7 @@ GameObject:
   - component: {fileID: 4372527373662958939}
   - component: {fileID: 4372527373662958933}
   - component: {fileID: 4372527373662958932}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10629,7 +10630,7 @@ GameObject:
   - component: {fileID: 4372527373788527846}
   - component: {fileID: 4372527373788527844}
   - component: {fileID: 4372527373788527845}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Land Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15499,7 +15500,7 @@ GameObject:
   - component: {fileID: 4372527373961436502}
   - component: {fileID: 4372527373961436496}
   - component: {fileID: 4372527373961436503}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tetra (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15582,7 +15583,7 @@ GameObject:
   - component: {fileID: 4372527373990930340}
   - component: {fileID: 4372527373990930342}
   - component: {fileID: 4372527373990930341}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tetra (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15663,7 +15664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4372527374177409058}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: X-Flipper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15698,7 +15699,7 @@ GameObject:
   - component: {fileID: 4372527374306244363}
   - component: {fileID: 4372527374306244357}
   - component: {fileID: 4372527374306244356}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Jump Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20569,7 +20570,7 @@ GameObject:
   - component: {fileID: 4372527374495474258}
   - component: {fileID: 4372527374495474284}
   - component: {fileID: 4372527374495474259}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tetra (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

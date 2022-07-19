@@ -33,7 +33,7 @@ public class DimensionAscension : MonoBehaviour
                 Futa.SetActive(true);
                 ichi.GetComponent<PlayerController>().EnableSelf();
                 Futa.GetComponent<PlayerController>().EnableSelf();
-                nextDimensionCheckpoint.Respawn();
+                nextDimensionCheckpoint.Respawn(FindObjectsOfType<PlayerType>());
                 MasterControl.main.SwitchPlayerIchi();
                 MasterControl.main.avatarList[1].playable = true;
             }
@@ -45,7 +45,7 @@ public class DimensionAscension : MonoBehaviour
                 ichi.GetComponent<PlayerController>().EnableSelf();
                 Futa.GetComponent<PlayerController>().EnableSelf();
                 San.GetComponent<PlayerController>().EnableSelf();
-                nextDimensionCheckpoint.Respawn();
+                nextDimensionCheckpoint.Respawn(FindObjectsOfType<PlayerType>());
                 MasterControl.main.SwitchPlayerIchi();
                 MasterControl.main.avatarList[2].playable = true;
             }

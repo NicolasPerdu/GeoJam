@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    [SerializeField] public Lane DestinationLane;
+    [SerializeField] public Lane destinationLane;
     [SerializeField] public Transform DestinationOnLane;
 }

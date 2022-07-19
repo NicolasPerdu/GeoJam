@@ -11,8 +11,8 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] private Material inActiveMaterial;
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private KeyCode respawnButton;
-    [SerializeField] private LayerMask layer;
-    [SerializeField] public PlayerController San;
+    [SerializeField] private int laneIndex;
+    [SerializeField] public PlayerController san;
     [SerializeField] public bool Active;
 
     private bool aboutToRespawn;
@@ -77,20 +77,21 @@ public class Checkpoint : MonoBehaviour
 
     private void FixedUpdate() {
         if (aboutToRespawn) {
-            Respawn();
+            Respawn(FindObjectsOfType<PlayerType>());
             aboutToRespawn = false;
         }
     }
 
-    public void Respawn()
+    public void Respawn(params PlayerType[] players)
     {
         int spawnIndex = 0;
 
-        foreach(PlayerType playerChr in FindObjectsOfType<PlayerType>()) {
+        foreach(PlayerType playerChr in players) 
+        {
             if (playerChr.avatar.playable)
             {
                 playerChr.controller.ResetValues();
-                playerChr.controller._groundLayer = layer;
+                playerChr.controller.SetLane(laneIndex);
                 playerChr.transform.root.position = spawnPoints[spawnIndex].position;
                 spawnIndex++;
             }
@@ -99,9 +100,10 @@ public class Checkpoint : MonoBehaviour
 
     public void RespawnSan()
     {
-        San._groundLayer = layer;
-        San.transform.position = spawnPoints[0].position;
-        San.gameObject.SetActive(true);
+        san.SetLane(laneIndex);
+
+        san.transform.position = spawnPoints[0].position;
+        san.gameObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -21,8 +21,20 @@ public class Ichi : PlayerType
     
     private float? triggerTime = null;
 
+    private bool wasActive = false;
 
-    override protected void Update() {
+    private void OnSwitch()
+    {
+        lastShot = Time.timeSinceLevelLoad;
+    }
+
+
+    override protected void Update() 
+    {
+        if (!wasActive && controller.isActivePlayer)
+        {
+            OnSwitch();
+        }
 
         if (controller.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
             triggerTime = Time.timeSinceLevelLoad;
@@ -34,7 +46,7 @@ public class Ichi : PlayerType
             triggerTime = null;
         }
 
-        Vector3 tempPropel = propel * .945F;
+        Vector3 tempPropel = propel * .98F;
 
         propel += (tempPropel - propel) * MasterControl.TimeRelator;
 
@@ -49,13 +61,16 @@ public class Ichi : PlayerType
         if (propel.x > 0 && controller.ColRight) propel.x = 0;
 
         base.Update();
+
+        wasActive = controller.isActivePlayer;
     }
 
-    private void FixedUpdate() {
+    void FixedUpdate() {
         if (shooting) {
             Shoot();
         }
     }
+
 
     private void Shoot()
     {
@@ -68,5 +83,8 @@ public class Ichi : PlayerType
         
         controller.PauseMovement(triggerStunTime);
         propel = Mathf.Sign(playerAnimator.FacingDirection) * Vector3.left * .82F * knockbackPower + Vector3.up * .24F;
+
+        if (!controller.Grounded)
+            propel.y = 0;
     }
 }

@@ -17,6 +17,10 @@ public class San : PlayerType {
     private float igniteTime;
     private bool asploding = false;
 
+    private Vector3 propelOthers = Vector3.zero;
+
+    private List<PlayerType> touchingPlayerBodies = new List<PlayerType>();
+
 
     void Start() {
         sanVisibleObjectGroup = transform.Find("X-Flipper").gameObject;
@@ -29,9 +33,12 @@ public class San : PlayerType {
             else
             {
                 asploding = true;
+                propelOthers = Vector3.back + Vector3.up * propelPower;
+                
                 igniteTime = Time.timeSinceLevelLoad;
                 controller.PauseMovement(3);
                 controller.PauseJumping(3);
+                controller.PauseGravity(3);
             }
         }
 
@@ -45,26 +52,79 @@ public class San : PlayerType {
     }
 
     void FixedUpdate() {
-        if (asploding && Time.timeSinceLevelLoad - igniteTime >= asplodeDelay) {
-            Asplode();
+        if (asploding)
+        {
+            // if igniteTime seconds has not passed, don't asplode, and check for asplode direction
+            if (Time.timeSinceLevelLoad - igniteTime < asplodeDelay) 
+            {
+                if (controller.isActivePlayer)
+                {
+                    // check for asplode direction (forward)
+                    if (Input.GetAxis("Vertical") > 0)
+                        propelOthers.z = -1;
+
+                    // check for asplode direction (backward)
+                    if (Input.GetAxis("Vertical") < 0)
+                        propelOthers.z = 1;
+                }
+
+                Vector3 pos = transform.localPosition;
+                pos.z = -propelOthers.z;
+                transform.localPosition = pos;
+            }
+            else // if time is equal or greater to igniteTime
+                Asplode();
         }
     }
 
     private void Asplode()
     {        
-
         controller.enabled = false;
         asploding = false;
+
+        RaycastHit[] hitInfos = Physics.SphereCastAll(transform.root.position, 2.0F, Vector3.left, 3.0F, LayerMask.GetMask("Player"), QueryTriggerInteraction.Collide);
+
+        foreach (RaycastHit hit in hitInfos)
+        {   
+            PlayerType playerType = hit.collider.transform.GetComponentInChildren<PlayerType>();
+            if (playerType != null && playerType != this)
+            {
+                if (!touchingPlayerBodies.Contains(playerType))
+                {
+                    touchingPlayerBodies.Add(playerType);
+                    playerType.controller.PauseMovement(igniteTime);
+                    playerType.controller.PauseJumping(igniteTime);
+                    if (controller.isActivePlayer)
+                        MasterControl.main.SwitchPlayer(playerType.avatar);
+                }
+            }
+        }
 
         StartCoroutine("Asplosion");
     }
 
+    private void PropelOthers()
+    {
+        foreach (PlayerType playerType in touchingPlayerBodies)
+        {
+            playerType.propel = propelOthers;
+            playerType.MoveLane((int)Mathf.Sign(propelOthers.z));
+            playerType.controller.UnpauseJumping();
+            playerType.controller.UnpauseMovement();
+        }
+
+        if (touchingPlayerBodies.Count == 0)
+            MasterControl.main.SwitchPlayerIchi();
+        
+        propelOthers = Vector3.zero;
+        touchingPlayerBodies = new List<PlayerType>();
+    }
+
     IEnumerator Asplosion()
     {
-
         Instantiate(kaboomPrefab, transform.position, Quaternion.identity);
-        float delayForBooms = .1F;
-        int numOfBooms = 5; 
+        float delayForBooms = .035F;
+        int numOfBooms = 8;
 
         for (int i = 0; i < numOfBooms; i++)
         {
@@ -73,6 +133,8 @@ public class San : PlayerType {
             kaboom.transform.localScale = Vector3.one * Random.Range(.5F, .9F);
             yield return new WaitForSeconds(delayForBooms);
         }
+
+        PropelOthers();
 
         sanVisibleObjectGroup.SetActive(false);
 
@@ -83,11 +145,15 @@ public class San : PlayerType {
             if (checkpoint.Active)
             {
                 checkpoint.RespawnSan();
+                Vector3 pos = transform.localPosition;
+                pos.z = 0;
+                transform.localPosition = pos;
                 sanVisibleObjectGroup.SetActive(true);
                 controller.enabled = true;
             }
             break;
         }
+
         yield return null;
     }
 }

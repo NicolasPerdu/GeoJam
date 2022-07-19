@@ -42,8 +42,7 @@ namespace TarodevController {
             Transform ptype = transform.root.GetComponentInChildren<PlayerType>().transform.Find("X-Flipper");
             if (ptype != null)
             {
-                    Debug.Log("huray for " + gameObject.transform.root.name);
-                    meshTransform = ptype;
+                meshTransform = ptype;
             }
         }
 

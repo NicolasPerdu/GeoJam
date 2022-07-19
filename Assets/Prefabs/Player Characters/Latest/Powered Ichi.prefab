@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4994179244344321495}
   - component: {fileID: 3977607456663575541}
   - component: {fileID: 619738576411554333}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5676882898326169371}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Projectile Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5676882898347144372}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: X-Flipper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 5676882898376264947}
   - component: {fileID: 5676882898376264945}
   - component: {fileID: 5676882898376264946}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Launch Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5027,7 +5027,7 @@ GameObject:
   - component: {fileID: 5676882898448009605}
   - component: {fileID: 5676882898448009602}
   - component: {fileID: 5676882898448009603}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5111,7 +5111,7 @@ GameObject:
   - component: {fileID: 5676882898754401858}
   - component: {fileID: 5676882898754401856}
   - component: {fileID: 5676882898754401857}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Jump Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9982,7 +9982,7 @@ GameObject:
   - component: {fileID: 5676882899050159697}
   - component: {fileID: 5676882899050159699}
   - component: {fileID: 5676882899050159698}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Land Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14852,7 +14852,7 @@ GameObject:
   - component: {fileID: 5676882899260765782}
   - component: {fileID: 5676882899260765780}
   - component: {fileID: 5676882899260765781}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Move Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19664,7 +19664,7 @@ GameObject:
   - component: {fileID: 5676882899279678626}
   - component: {fileID: 5676882899279678628}
   - component: {fileID: 5676882899279678627}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19823,7 +19823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5676882899754665271}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19861,7 +19861,7 @@ GameObject:
   - component: {fileID: 6282658368475831251}
   - component: {fileID: 6282658368475831250}
   - component: {fileID: 6282658368475831253}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Powered Ichi
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -19904,9 +19904,7 @@ MonoBehaviour:
   _characterBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 1.5, z: 0}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  defaultLaneIndex: 0
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
@@ -19979,9 +19977,9 @@ GameObject:
   - component: {fileID: 5676882899340582908}
   - component: {fileID: 6963205099429311978}
   - component: {fileID: 5837280216702879666}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ichi
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20037,11 +20035,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   propel: {x: 0, y: 0, z: 0}
+  laneIndex: 0
+  laneSwitching: 0
   projectileSpawnpoint: {fileID: 5676882898326169371}
   shootDelay: 0.175
   triggerDelay: 0.1
-  firingPower: 0.32
-  knockbackPower: 1
+  firingPower: 0.45
+  knockbackPower: 0.875
   shootingButton: 304
   ProjectilePrefab: {fileID: 3386715862544041693, guid: cb063889b1fc20b4b9faf7310f77c33d, type: 3}
   playerAnimator: {fileID: 5676882899279678628}
@@ -20088,7 +20088,7 @@ GameObject:
   - component: {fileID: 5473174548054490124}
   - component: {fileID: 5735057976827366444}
   - component: {fileID: 2371357750894379829}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}

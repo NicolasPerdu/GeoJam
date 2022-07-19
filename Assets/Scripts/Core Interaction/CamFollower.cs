@@ -6,8 +6,8 @@ public class CamFollower : MonoBehaviour
 {
     static public CamFollower main;
     const float MAX_FOLLOW_DIST =   4.0F;
-    const float MIN_FOLLOW_DIST =   0.1F;
-    const float FOLLOW_LAG      =   0.98F;
+    const float MIN_FOLLOW_DIST =   0.05F;
+    const float FOLLOW_LAG      =   0.96F;
     const float CATCHUP_LAG     =   FOLLOW_LAG * FOLLOW_LAG;
 
 
@@ -57,7 +57,12 @@ public class CamFollower : MonoBehaviour
         }
 
 
-        distance *= followFactor;
+        float newdist = distance * followFactor;
+
+        if (newdist < MIN_FOLLOW_DIST)
+            newdist = MIN_FOLLOW_DIST;
+
+        distance += (newdist - distance) * MasterControl.TimeRelator;
 
         transform.position = targetPos - normal * distance;
     }

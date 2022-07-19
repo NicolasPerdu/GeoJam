@@ -2667,6 +2667,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1488033574}
     m_Modifications:
     - target: {fileID: 771617695098818675, guid: 3deea7a9de450a74aa35b1e177527cf3, type: 3}
+      propertyPath: san
+      value: 
+      objectReference: {fileID: 1343797182}
+    - target: {fileID: 771617695098818675, guid: 3deea7a9de450a74aa35b1e177527cf3, type: 3}
       propertyPath: Active
       value: 1
       objectReference: {fileID: 0}
@@ -4570,6 +4574,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4372527372983397075, guid: bb2f2eea19da20b449ed1ba119292513, type: 3}
   m_PrefabInstance: {fileID: 9135128149868832506}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1343797182 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4372527372983397103, guid: bb2f2eea19da20b449ed1ba119292513, type: 3}
+  m_PrefabInstance: {fileID: 9135128149868832506}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343797178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbfb23717f7dee14688bccda60b77b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1346436252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5083,9 +5098,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac27634fd7c13a84184a1f5abcb46a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundLayer:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
 --- !u!1 &1500797315
 GameObject:
   m_ObjectHideFlags: 0
@@ -5960,6 +5975,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1488033574}
     m_Modifications:
+    - target: {fileID: 771617695098818675, guid: 3deea7a9de450a74aa35b1e177527cf3, type: 3}
+      propertyPath: san
+      value: 
+      objectReference: {fileID: 1343797182}
     - target: {fileID: 5881463087960200037, guid: 3deea7a9de450a74aa35b1e177527cf3, type: 3}
       propertyPath: m_Name
       value: 2D-1 Checkpoint
@@ -6084,7 +6103,7 @@ GameObject:
   - component: {fileID: 1674496546}
   - component: {fileID: 1674496547}
   m_Layer: 0
-  m_Name: Npc
+  m_Name: Genten
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6529,9 +6548,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac27634fd7c13a84184a1f5abcb46a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundLayer:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
 --- !u!114 &1745236389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6632,8 +6651,6 @@ GameObject:
   - component: {fileID: 1773131972}
   - component: {fileID: 1773131971}
   - component: {fileID: 1773131970}
-  - component: {fileID: 1773131969}
-  - component: {fileID: 1773131968}
   - component: {fileID: 1773131974}
   - component: {fileID: 1773131989}
   - component: {fileID: 1773131988}
@@ -6754,11 +6771,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 1343.8457, y: 345.26584}
+  scrollPos: {x: 1178.667, y: 378.95215}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 430.8
-  zoom: 0.6700003
+  zoom: 0.55000037
   scrollViewRect:
     serializedVersion: 2
     x: -343
@@ -6766,7 +6783,7 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1773132003}
+  - {fileID: 1773131970}
   selectedCommands: []
   variables: []
   description: 
@@ -7037,7 +7054,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -1148.4497
     y: 73.18381
-    width: 76.86566
+    width: 75.45453
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -7099,58 +7116,6 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
---- !u!114 &1773131968
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773131954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeRect:
-    serializedVersion: 2
-    x: 618
-    y: 48
-    width: 193.28351
-    height: 40
-  tint: {r: 1, g: 1, b: 1, a: 1}
-  useCustomTint: 0
-  itemId: 15
-  blockName: IchiAndSanChastiseFuta
-  description: 
-  eventHandler: {fileID: 0}
-  commandList: []
-  suppressAllAutoSelections: 0
---- !u!114 &1773131969
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773131954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeRect:
-    serializedVersion: 2
-    x: 229.87793
-    y: 77.58537
-    width: 187.31337
-    height: 40
-  tint: {r: 1, g: 1, b: 1, a: 1}
-  useCustomTint: 0
-  itemId: 14
-  blockName: IchiFutaAndSanMeetYo
-  description: 
-  eventHandler: {fileID: 0}
-  commandList: []
-  suppressAllAutoSelections: 0
 --- !u!114 &1773131970
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -7167,7 +7132,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 111.06184
     y: -59.560966
-    width: 197.76112
+    width: 195.45445
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -7253,7 +7218,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -622.83765
     y: 71.70356
-    width: 158.95517
+    width: 157.27264
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -7315,7 +7280,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -835.5212
     y: 68.2887
-    width: 175.37308
+    width: 169.99991
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -7984,7 +7949,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -438.44308
     y: 79.033
-    width: 151.4925
+    width: 148.18176
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -8170,8 +8135,8 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: -264.27237
-    y: 75.15507
-    width: 127.6119
+    y: 73.33688
+    width: 124.5454
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -9685,7 +9650,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -1046.5641
     y: 70.89789
-    width: 173.88054
+    width: 171.8181
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -10108,9 +10073,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: -115.49182
+    x: -113.99928
     y: -42.918083
-    width: 117.16415
+    width: 115.4545
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -10899,9 +10864,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac27634fd7c13a84184a1f5abcb46a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundLayer:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!114 &1994600794 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 771617695098818675, guid: 3deea7a9de450a74aa35b1e177527cf3, type: 3}
