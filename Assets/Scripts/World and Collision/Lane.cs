@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Lane : MonoBehaviour
 {
-    public LayerMask groundLayer;
+    public LayerMask groundLayer => gameObject.layer;
     public int laneIndex {get; private set;}
 
     void Awake()

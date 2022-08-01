@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Fungus;
+
+public enum DimensionMode {One, Two, Three}
 
 public class MasterControl : MonoBehaviour
 {
     const float FIXED_DELAY_MS = .02F;
     static public float TimeRelator => Time.deltaTime / Time.fixedDeltaTime;
 
-    public Flowchart narrative;
     static public MasterControl main;
     [HideInInspector]public PlayerAvatar[] avatarList;
     [HideInInspector]public PlayerAvatar activeAvatar = null;
     [HideInInspector]public List<Lane> lanes;
+
+    public DimensionMode defaultDimensionMode = DimensionMode.One;
 
     bool disableInputEveryFrame = false;
 
@@ -72,8 +74,8 @@ public class MasterControl : MonoBehaviour
         disableInputEveryFrame = false;
         SwitchPlayer(avatarList[Mathf.Clamp(characterDimension, 1, 3) - 1]);
     }
-    public void SwitchPlayerIchi() => SwitchPlayer(avatarList[0]);
-    public void SwitchPlayerFuta() => SwitchPlayer(avatarList[1]);
+    public void SwitchPlayerIota() => SwitchPlayer(avatarList[0]);
+    public void SwitchPlayerMobius() => SwitchPlayer(avatarList[1]);
     public void SwitchPlayerSan() => SwitchPlayer(avatarList[2]);
     
 }
