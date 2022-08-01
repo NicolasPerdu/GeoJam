@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DimensionMode {One, Two, Three}
-
 public class MasterControl : MonoBehaviour
 {
     const float FIXED_DELAY_MS = .02F;
@@ -12,9 +10,6 @@ public class MasterControl : MonoBehaviour
     static public MasterControl main;
     [HideInInspector]public PlayerAvatar[] avatarList;
     [HideInInspector]public PlayerAvatar activeAvatar = null;
-    [HideInInspector]public List<Lane> lanes;
-
-    public DimensionMode defaultDimensionMode = DimensionMode.One;
 
     bool disableInputEveryFrame = false;
 
@@ -22,7 +17,6 @@ public class MasterControl : MonoBehaviour
     {
         main = this;
         avatarList = new PlayerAvatar[3];
-        lanes = new List<Lane>();
     }
 
     void Start()
@@ -30,9 +24,7 @@ public class MasterControl : MonoBehaviour
         //narrative.ExecuteBlock("Intro");
         if (activeAvatar == null && avatarList.Length > 0)
             activeAvatar = avatarList[0];
-        lanes.Sort((Lane a, Lane b) => Mathf.FloorToInt(a.transform.position.z - b.transform.position.z));
     }
-
     void Update()
     {
         int pIndex = -1;
@@ -74,8 +66,8 @@ public class MasterControl : MonoBehaviour
         disableInputEveryFrame = false;
         SwitchPlayer(avatarList[Mathf.Clamp(characterDimension, 1, 3) - 1]);
     }
-    public void SwitchPlayerIota() => SwitchPlayer(avatarList[0]);
-    public void SwitchPlayerMobius() => SwitchPlayer(avatarList[1]);
+    public void SwitchPlayerIchi() => SwitchPlayer(avatarList[0]);
+    public void SwitchPlayerFuta() => SwitchPlayer(avatarList[1]);
     public void SwitchPlayerSan() => SwitchPlayer(avatarList[2]);
     
 }
