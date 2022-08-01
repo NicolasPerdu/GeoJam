@@ -5,39 +5,57 @@ using Fungus;
 
 public class MasterControl : MonoBehaviour
 {
+    const float FIXED_DELAY_MS = .02F;
+    static public float TimeRelator => Time.deltaTime / Time.fixedDeltaTime;
+
     public Flowchart narrative;
     static public MasterControl main;
-    [HideInInspector]public PlayerAvatar[] characterList;
-    [HideInInspector]public PlayerAvatar activeCharacter = null;
+    [HideInInspector]public PlayerAvatar[] avatarList;
+    [HideInInspector]public PlayerAvatar activeAvatar = null;
+    [HideInInspector]public List<Lane> lanes;
 
     bool disableInputEveryFrame = false;
 
     void Awake()
     {
         main = this;
-        characterList = new PlayerAvatar[3];
+        avatarList = new PlayerAvatar[3];
+        lanes = new List<Lane>();
     }
 
     void Start()
     {
         //narrative.ExecuteBlock("Intro");
+        if (activeAvatar == null && avatarList.Length > 0)
+            activeAvatar = avatarList[0];
+        lanes.Sort((Lane a, Lane b) => Mathf.FloorToInt(a.transform.position.z - b.transform.position.z));
     }
+
     void Update()
     {
-        if (Input.GetButtonDown("Character 1") && characterList[0] != null)
-            SwitchPlayer(characterList[0]);
-        else if (Input.GetButtonDown("Character 2") && characterList[1] != null)
-            SwitchPlayer(characterList[1]);
-        else if (Input.GetButtonDown("Character 3") && characterList[2] != null)
-            SwitchPlayer(characterList[2]);
+        int pIndex = -1;
+        if (Input.GetButtonDown("Character 1"))
+            pIndex = 0;
+        else if (Input.GetButtonDown("Character 2"))
+            pIndex = 1;
+        else if (Input.GetButtonDown("Character 3"))
+            pIndex = 2;
+
+        if (pIndex >= 0)
+        {
+            PlayerAvatar avatarToSwitchTo = avatarList[pIndex];
+            if (avatarToSwitchTo != null && avatarToSwitchTo.playable)
+                SwitchPlayer(avatarToSwitchTo);
+        }
+
 
         if (disableInputEveryFrame)
-            activeCharacter = null;
+            activeAvatar = null;
     }
 
     public void SwitchPlayer(PlayerAvatar avatar)
     {
-        activeCharacter = avatar;
+        activeAvatar = avatar;
         CamFollower.main.xLockToTarget = false;
         CamFollower.main.followObject = avatar.transform;
         
@@ -46,16 +64,16 @@ public class MasterControl : MonoBehaviour
 
     public void DisablePlayer()
     {
-        activeCharacter = null;
+        activeAvatar = null;
         disableInputEveryFrame = true;
     }
     public void EnablePlayer(int characterDimension)
     {
         disableInputEveryFrame = false;
-        SwitchPlayer(characterList[Mathf.Clamp(characterDimension, 1, 3) - 1]);
+        SwitchPlayer(avatarList[Mathf.Clamp(characterDimension, 1, 3) - 1]);
     }
-    public void SwitchPlayerIchi() => SwitchPlayer(characterList[0]);
-    public void SwitchPlayerFuta() => SwitchPlayer(characterList[1]);
-    public void SwitchPlayerSan() => SwitchPlayer(characterList[2]);
+    public void SwitchPlayerIchi() => SwitchPlayer(avatarList[0]);
+    public void SwitchPlayerFuta() => SwitchPlayer(avatarList[1]);
+    public void SwitchPlayerSan() => SwitchPlayer(avatarList[2]);
     
 }

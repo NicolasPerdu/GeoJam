@@ -3,53 +3,81 @@ using System.Collections.Generic;
 using TarodevController;
 using UnityEngine;
 
-public class Futa : MonoBehaviour {
-
-    private Vector3 propelDash = Vector3.zero;
+public class Futa : PlayerType {
 
     [SerializeField] private float dashDelay = 1f;
     [SerializeField] private float propelPower = 1f;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private float suspendAirTime = .35F;
+    [SerializeField] private ParticleSystem _buildupParticles;
 
     private bool dashing;
     private float? lastDash;
     private bool canDash = true;
 
-    PlayerController controllerReference = null;
+    int propelDir = 0;
 
-    private void Awake() {
-        controllerReference = GetComponentInParent<PlayerController>();
+    Vector3 lastPos;
+
+    void Start()
+    {
+        lastPos = transform.root.position;
     }
 
-    private void Update() {
-        if (controllerReference.isActivePlayer && canDash && !controllerReference.Grounded && Input.GetButtonDown("Action") && (lastDash == null || Time.timeSinceLevelLoad - lastDash >= dashDelay)) {
+    override protected void Update() 
+    {
+        /*if (!controller.isActivePlayer)
+        {
+            dashing = false;
+            playerAnimator._moveParticles.Stop();
+            _buildupParticles.Stop();
+        }*/
+
+        Vector3 movementLastFrame = transform.root.position - lastPos;
+
+
+        if (controller.isActivePlayer && canDash && !controller.Grounded && Input.GetButtonDown("Action") && (lastDash == null || Time.timeSinceLevelLoad - lastDash >= dashDelay)) {
             lastDash = Time.timeSinceLevelLoad;
             canDash = false;
             dashing = true;
-            controllerReference.PauseGravity(suspendAirTime);
+            controller.PauseGravity(suspendAirTime);
+            _buildupParticles.Play();
         }
 
-        propelDash *= .985F;
-        if (propelDash.magnitude < .5F)
-            propelDash = Vector3.zero;
-        if ((!controllerReference.ColDown && propelDash.y <= 0) || (!controllerReference.ColUp && propelDash.y >= 0))
-            transform.parent.position += propelDash * Time.deltaTime;
-        
-        if (controllerReference.Grounded)
+        if (dashing)
+        {     
+            if (lastDash != null && Time.timeSinceLevelLoad - lastDash >= suspendAirTime)
+                Propel();
+            if (propelDir > 0 && movementLastFrame.y < 0)
+                playerAnimator._moveParticles.Stop();
+        }
+
+        Vector3 newpropel = propel * .98F;
+        propel += (newpropel - propel) * MasterControl.TimeRelator;
+
+
+        if (controller.Grounded)
+        {
             canDash = true;
-    }
-
-    private void FixedUpdate() {
-        if (dashing && lastDash != null && Time.timeSinceLevelLoad - lastDash >= suspendAirTime){
-            Propel();
+            if (!laneSwitching)
+                propel.y = 0;
+            propelDir = 0;
+            dashing = false;
         }
+
+        base.Update();
+
+
+        lastPos = transform.root.position;
     }
 
     private void Propel() {
+        _buildupParticles.Stop();
+        playerAnimator._moveParticles.Play();
         lastDash = null;
-        propelDash = Mathf.Sign(Input.GetAxis("Vertical")) * propelPower * Vector3.up * 100;
-        if (propelDash.y < 0)
-            propelDash.y *= .74F;
+        propel = Mathf.Sign(Input.GetAxis("Vertical")) * propelPower * Vector3.up * 0.4F;
+        propelDir = propel.y > 0 ? 1 : -1;
+        if (propel.y < 0)
+            propel.y *= .74F;
     }
 }

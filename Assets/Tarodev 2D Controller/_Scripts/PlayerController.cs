@@ -12,12 +12,17 @@ namespace TarodevController {
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
     public class PlayerController : MonoBehaviour, IPlayerController {
+
+        public const float VERTICAL_DEATH_LINE = -20F;
         
         [HideInInspector]public int facingDirection = 1;
 
-        public bool isActivePlayer => MasterControl.main.activeCharacter != null && MasterControl.main.activeCharacter.transform == transform;
+        public bool isActivePlayer => MasterControl.main.activeAvatar != null && MasterControl.main.activeAvatar.transform == transform;
+
+        public bool debugBypassNixJump = false;
 
         // Public for external hooks
+        
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
         public bool JumpingThisFrame { get; private set; }
@@ -25,10 +30,11 @@ namespace TarodevController {
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
         public NPC targetNPC;
-        public DialogNPC targetDialog;
         public SpriteRenderer renderer2;
         private float interactionRadius = 2f;
         private Vector2 move;
+
+        private PlayerType playerType;
 
 
         private bool freezingMovement = false;
@@ -37,12 +43,25 @@ namespace TarodevController {
         private static bool canJump = false;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
+
+        Coroutine movePause = null;
+        Coroutine gravPause = null;
+        Coroutine jumpPause = null;
         
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
         void Awake() => Invoke(nameof(Activate), 0.5f);
         void Activate() =>  _active = true;
+
+        void Start()
+        {
+            if (debugBypassNixJump) canJump = true;
+            playerType = transform.root.GetComponentInChildren<PlayerType>();
+            playerType.laneIndex = defaultLaneIndex;
+            
+            SetLane(playerType.laneIndex);
+        }
         
         private void Update() {
             if(!_active) return;
@@ -59,6 +78,7 @@ namespace TarodevController {
             CalculateJump(); // Possibly overrides vertical
 
             MoveCharacter(); // Actually perform the axis movement
+            FallDeathCheck();
         }
         public void ToggleCanJump()
         {
@@ -71,10 +91,10 @@ namespace TarodevController {
             if (isActivePlayer)
             {
                 	Input = new FrameInput {
-                		JumpDown = freezingJump || !canJump? false : UnityEngine.Input.GetButtonDown("Jump"),
-                		JumpUp = freezingJump || !canJump? false : UnityEngine.Input.GetButtonUp("Jump"),
+                		JumpDown = freezingJump || !canJump ? false : UnityEngine.Input.GetButtonDown("Jump"),
+                		JumpUp = freezingJump || !canJump ? false : UnityEngine.Input.GetButtonUp("Jump"),
                 		X = freezingMovement ? 0 : UnityEngine.Input.GetAxisRaw("Horizontal"),
-                    	Dialog = UnityEngine.Input.GetButtonDown("Fire1")
+                    	Dialog = UnityEngine.Input.GetButtonDown("Action") || UnityEngine.Input.GetButtonDown("Jump")
                 };
                 if (Input.JumpDown) {
                     _lastJumpPressed = Time.time;
@@ -90,12 +110,52 @@ namespace TarodevController {
 
         #region Collisions
 
-        public void PauseMovement(float seconds) => StartCoroutine(FreezeMovementOnTimer(seconds));
-        public void PauseGravity(float seconds) => StartCoroutine(FreezeGravityOnTimer(seconds));
-        public void PauseJumping(float seconds) => StartCoroutine(FreezeJumpingOnTimer(seconds));
+        public void PauseMovement(float seconds)
+        {
+            UnpauseMovement();
+            movePause = StartCoroutine(FreezeMovementOnTimer(seconds));
+        }
+        public void PauseGravity(float seconds)
+        {
+            UnpauseGravity();
+            gravPause = StartCoroutine(FreezeGravityOnTimer(seconds));
+        }
+        public void PauseJumping(float seconds)
+        {
+            UnpauseJumping();
+            jumpPause = StartCoroutine(FreezeJumpingOnTimer(seconds));
+        }
+
+        public void UnpauseMovement()
+        {
+            if (movePause != null)
+                StopCoroutine(movePause);
+                
+            
+            freezingMovement = false;
+        }
+
+        public void UnpauseGravity()
+        {
+            if (gravPause != null)
+                StopCoroutine(gravPause);
+                            
+            freezingGravity = false;
+            freezingMovement = false;
+        }
+
+        public void UnpauseJumping()
+        {
+            if (jumpPause != null)
+                StopCoroutine(jumpPause);
+            
+            freezingJump = false;
+        }
+
 
         [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
-        [SerializeField] public LayerMask _groundLayer;
+        public int defaultLaneIndex = 0;
+        public LayerMask _groundLayer => MasterControl.main.lanes[playerType.laneIndex].groundLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -188,64 +248,12 @@ namespace TarodevController {
         [SerializeField] private float _apexBonus = 2;
 
 
-        public void CheckForNearbyNPCInky() {
-            if (targetNPC != null) {
-                targetDialog.StartStory(renderer2, transform, targetNPC);
-                //anim.SetBool("isWalking", false);
-                //dialogEnabled = test.dialogEnabled;
-            }
-        }
 
-        private void findTargetNPC() {
-            Debug.Log("findTargetNPC");
-            var allParticipants = new List<NPC>(FindObjectsOfType<NPC>());
-
-            float distance = 0;
-
-            List<NPC> targets = allParticipants.FindAll(delegate (NPC p) {
-                //distance = (p.transform.position - this.transform.position).magnitude;
-                //return distance <= interactionRadius;
-                return true;
-            });
-
-            NPC minNPC = null;
-            float dist = 0;
-
-            if (targets.Count > 0) {
-                minNPC = targets[0];
-                dist = (minNPC.transform.position - this.transform.position).magnitude;
-                Debug.Log("dist : " + dist);
-            }
-
-            foreach (NPC npc in targets) {
-                float dist2 = (npc.transform.position - this.transform.position).magnitude;
-                if (dist2 < dist) {
-                    minNPC = npc;
-                    dist = dist2;
-                }
-            }
-
-            if (minNPC != null) {
-                Debug.Log("set target !");
-                targetNPC = minNPC;
-                targetDialog = minNPC.GetComponent<DialogNPC>();
-            } else {
-                targetNPC = null;
-                targetDialog = null;
-            }
-        }
-
-        public void continuStory() {
-
-            // if the story is finished 
-            if (!targetDialog.choicesGenerated) { //&& !targetDialog.story.canContinue
-                targetDialog.RefreshView();
-            }
-        }
+        public void SetLane(int laneIndex) => playerType.SetLane(laneIndex);
 
         private void CalculateWalk() {
             if(Input.Dialog) {
-                Debug.Log("Dialog !");
+                /*Debug.Log("Dialog !");
                 if (targetDialog != null && targetDialog.choicesGenerated) {
                     targetDialog.pushButton();
                 } else {
@@ -259,7 +267,7 @@ namespace TarodevController {
                             CheckForNearbyNPCInky();
                         }
                     }
-                }
+                }*/
             }
             
 
@@ -303,7 +311,12 @@ namespace TarodevController {
             }
             else if (_colDown) {
                 // Move out of the ground
-                if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
+                if (_currentVerticalSpeed < 0)
+                {
+                    _currentVerticalSpeed = 0;
+                    if (playerType.propel.y > 0)
+                        playerType.propel.y = 0;
+                }
             }
             else {
                 // Add downward force while ascending if we ended the jump early
@@ -332,6 +345,27 @@ namespace TarodevController {
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
+
+
+        public void ResetValues()
+        {
+            
+        }
+
+        private void FallDeathCheck()
+        {
+            if (transform.position.y > VERTICAL_DEATH_LINE) return;
+
+
+            foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
+            {
+                if (checkpoint.Active)
+                {
+                    checkpoint.Respawn(playerType);
+                    break;
+                }
+            }
+        }
 
         private void CalculateJumpApex() {
             if (!_colDown) {
@@ -377,9 +411,11 @@ namespace TarodevController {
 
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter() {
+            var prevZ = transform.position.z;
+
             var pos = transform.position;
-            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
-            var move = RawMovement * Time.deltaTime;
+            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed, 0) * Time.deltaTime + new Vector3(playerType.propel.x, playerType.propel.y) * MasterControl.TimeRelator;// + playerType.propel * MasterControl.TimeRelator; // Used externally
+            var move = RawMovement;
             var furthestPoint = pos + move;
 
             // check furthest movement. If nothing hit, move and don't do extra checks
@@ -409,38 +445,27 @@ namespace TarodevController {
                     return;
                 }
 
-                positionToMoveTo = new Vector3(posToTry2D.x, posToTry2D.y, transform.position.z);
+                positionToMoveTo = new Vector3(posToTry2D.x, posToTry2D.y, prevZ);
             }
         }
 
         #endregion
 
         private void OnTriggerEnter(Collider other) {
-            Debug.Log("Trigger enter!");
             Teleporter tp = other.gameObject.GetComponent<Teleporter>();
-            if (tp) {
-                Debug.Log("Hit Teleport: " + other.gameObject.name);
-                transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.DestinationLane.transform.localPosition.z);
-                _groundLayer = tp.DestinationLane.GroundLayer;
+            if (tp && playerType is San) {
+                //Debug.Log("Hit Teleport: " + other.gameObject.name);
+                transform.position = new Vector3(tp.DestinationOnLane.position.x, tp.DestinationOnLane.position.y, tp.destinationLane.transform.localPosition.z);
+                SetLane(tp.destinationLane.laneIndex);
             }
 
             Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
             if (cp) {
-                Debug.Log("Hit CP!");
+                //Debug.Log("Hit CP!");
                 cp.Activate();
             }
-            if (other.CompareTag("Death"))
-            {
-                foreach (Checkpoint checkpoint in FindObjectsOfType<Checkpoint>())
-                {
-                    if (checkpoint.Active)
-                    {
-                        checkpoint.Respawn();
-                    }
-                    break;
-                }
-            }
         }
+
 
         void OnColliderEnter2D(Collision2D c) {
             if (c.gameObject.tag == "Bouncer")
@@ -456,6 +481,7 @@ namespace TarodevController {
                 nAverage /= i;
 
                 _currentHorizontalSpeed = nAverage.x * 40;
+                _currentVerticalSpeed = nAverage.y * 40;
             }
         }
 

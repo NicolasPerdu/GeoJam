@@ -8,32 +8,62 @@ namespace TarodevController {
     /// This is a supplementary script to help with effects and animation. Basically a juice factory.
     /// </summary>
     public class PlayerAnimator : MonoBehaviour {
+
+        [SerializeField] private float leftDegrees = 180;
+        [SerializeField] private float rightDegrees = 0;
         [SerializeField] private Animator _anim;
         [SerializeField] private AudioSource _source;
         [SerializeField] private LayerMask _groundMask;
-        [SerializeField] private ParticleSystem _jumpParticles, _launchParticles;
-        [SerializeField] private ParticleSystem _moveParticles, _landParticles;
+        [SerializeField] public ParticleSystem _jumpParticles, _launchParticles;
+        [SerializeField] public ParticleSystem _moveParticles, _landParticles;
         [SerializeField] private AudioClip[] _footsteps;
         [SerializeField] private float _maxTilt = .1f;
         [SerializeField] private float _tiltSpeed = 1;
         [SerializeField, Range(1f, 3f)] private float _maxIdleSpeed = 2;
         [SerializeField] private float _maxParticleFallSpeed = -40;
 
+        Transform meshTransform = null;
+        float lastX = 1;
+
+        public int FacingDirection => (int)Mathf.Sign(lastX);
+
         private IPlayerController _player;
         private bool _playerGrounded;
         private ParticleSystem.MinMaxGradient _currentGradient;
         private Vector2 _movement;
 
-        void Awake() => _player = GetComponentInParent<IPlayerController>();
+        void Awake()
+        {
+            _player = GetComponentInParent<IPlayerController>();
+        }
+
+        void Start()
+        {
+            Transform ptype = transform.root.GetComponentInChildren<PlayerType>().transform.Find("X-Flipper");
+            if (ptype != null)
+            {
+                meshTransform = ptype;
+            }
+        }
 
         void Update() {
             if (_player == null) return;
 
             // Flip the sprite
-            if (_player.Input.X != 0) transform.localScale = new Vector3(_player.Input.X > 0 ? 1 : -1, 1, 1);
+            {
+                if (_player.Input.X != 0)
+                {
+                    lastX = _player.Input.X;
+                }
+
+                Vector3 targetRotSubVector = new Vector3(0, Mathf.Lerp(leftDegrees, rightDegrees, Mathf.InverseLerp(-1, 1, lastX)), 0);
+                meshTransform.localRotation = Quaternion.RotateTowards(meshTransform.localRotation, Quaternion.Euler(targetRotSubVector), 800 * Time.deltaTime);
+ 
+
+            }
 
             // Lean while running
-            var targetRotVector = new Vector3(0, 0, Mathf.Lerp(-_maxTilt, _maxTilt, Mathf.InverseLerp(-1, 1, _player.Input.X)));
+            Vector3 targetRotVector = new Vector3(0, 0, Mathf.Lerp(-_maxTilt, _maxTilt, Mathf.InverseLerp(-1, 1, _player.Input.X)));
             _anim.transform.rotation = Quaternion.RotateTowards(_anim.transform.rotation, Quaternion.Euler(targetRotVector), _tiltSpeed * Time.deltaTime);
 
             // Speed up idle while running
@@ -79,6 +109,7 @@ namespace TarodevController {
             }
 
             _movement = _player.RawMovement; // Previous frame movement is more valuable
+
         }
 
         private void OnDisable() {

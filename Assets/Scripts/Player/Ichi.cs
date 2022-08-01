@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using TarodevController;
 using UnityEngine;
 
-public class Ichi : MonoBehaviour
+public class Ichi : PlayerType
 {
     [SerializeField] private Transform projectileSpawnpoint;
     [SerializeField] private float shootDelay = 1f;
     [SerializeField] private float triggerDelay = .05f;
     [SerializeField] private float firingPower = 1f;
+    [SerializeField] private float knockbackPower = 1f;
     [SerializeField] private KeyCode shootingButton;
     [SerializeField] private Projectile ProjectilePrefab; 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -20,16 +21,22 @@ public class Ichi : MonoBehaviour
     
     private float? triggerTime = null;
 
-    private Vector3 knockback = Vector3.zero;
+    private bool wasActive = false;
 
-    PlayerController controllerReference = null;
-
-    private void Awake() {
-        controllerReference = GetComponentInParent<PlayerController>();
+    private void OnSwitch()
+    {
+        lastShot = Time.timeSinceLevelLoad;
     }
 
-    private void Update() {
-        if (controllerReference.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
+
+    override protected void Update() 
+    {
+        if (!wasActive && controller.isActivePlayer)
+        {
+            OnSwitch();
+        }
+
+        if (controller.isActivePlayer && Input.GetButtonDown("Action") && (Time.timeSinceLevelLoad - lastShot >= shootDelay)) {
             triggerTime = Time.timeSinceLevelLoad;
         }
 
@@ -39,33 +46,45 @@ public class Ichi : MonoBehaviour
             triggerTime = null;
         }
 
-        knockback *= .98F;
-        if (knockback.magnitude < .5)
-            knockback = Vector3.zero;
+        Vector3 tempPropel = propel * .98F;
 
-        if (knockback.x < 0 && controllerReference.ColLeft) knockback.x = 0;
-        if (knockback.x > 0 && controllerReference.ColRight) knockback.x = 0;
+        propel += (tempPropel - propel) * MasterControl.TimeRelator;
 
-        transform.parent.position += knockback * Time.deltaTime;
+        if (controller.Grounded)    // ground friction
+            propel.x += (tempPropel * .975F - propel).x * MasterControl.TimeRelator;
 
+
+        if (propel.magnitude < .05F)
+            propel = Vector3.zero;
+
+        if (propel.x < 0 && controller.ColLeft) propel.x = 0;
+        if (propel.x > 0 && controller.ColRight) propel.x = 0;
+
+        base.Update();
+
+        wasActive = controller.isActivePlayer;
     }
 
-    private void FixedUpdate() {
+    void FixedUpdate() {
         if (shooting) {
             Shoot();
         }
     }
 
+
     private void Shoot()
     {
         Projectile projectile = 
         Instantiate(ProjectilePrefab, projectileSpawnpoint.position, projectileSpawnpoint.rotation).GetComponent<Projectile>();
-        projectile.Speed = playerAnimator.transform.localScale.x * firingPower;
+        projectile.Speed = playerAnimator.FacingDirection * firingPower;
 
         shooting = false;
         lastShot = Time.timeSinceLevelLoad;
         
-        controllerReference.PauseMovement(triggerStunTime);
-        knockback = Mathf.Sign(playerAnimator.transform.localScale.x) * Vector3.left * 90 + Vector3.up * 15;
+        controller.PauseMovement(triggerStunTime);
+        propel = Mathf.Sign(playerAnimator.FacingDirection) * Vector3.left * .82F * knockbackPower + Vector3.up * .24F;
+
+        if (!controller.Grounded)
+            propel.y = 0;
     }
 }

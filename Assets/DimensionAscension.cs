@@ -9,7 +9,6 @@ public class DimensionAscension : MonoBehaviour
     [SerializeField] public GameObject Futa;
     [SerializeField] public GameObject San;
     [SerializeField] public Checkpoint nextDimensionCheckpoint;
-    [SerializeField] public MasterControl theMaster;
     [SerializeField] public int destinationDimension;
 
     // Start is called before the first frame update
@@ -34,8 +33,9 @@ public class DimensionAscension : MonoBehaviour
                 Futa.SetActive(true);
                 ichi.GetComponent<PlayerController>().EnableSelf();
                 Futa.GetComponent<PlayerController>().EnableSelf();
-                nextDimensionCheckpoint.Respawn();
-                theMaster.SwitchPlayerIchi();
+                nextDimensionCheckpoint.Respawn(FindObjectsOfType<PlayerType>());
+                MasterControl.main.SwitchPlayerIchi();
+                MasterControl.main.avatarList[1].playable = true;
             }
             else
             {
@@ -45,8 +45,9 @@ public class DimensionAscension : MonoBehaviour
                 ichi.GetComponent<PlayerController>().EnableSelf();
                 Futa.GetComponent<PlayerController>().EnableSelf();
                 San.GetComponent<PlayerController>().EnableSelf();
-                nextDimensionCheckpoint.Respawn();
-                theMaster.SwitchPlayerIchi();
+                nextDimensionCheckpoint.Respawn(FindObjectsOfType<PlayerType>());
+                MasterControl.main.SwitchPlayerIchi();
+                MasterControl.main.avatarList[2].playable = true;
             }
         }
     }
